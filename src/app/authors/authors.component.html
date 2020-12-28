@@ -1,0 +1,22 @@
+<h1>Authors</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-1">
+            <label for="search" class="control-label">Search</label>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="search" placeholder="by firstname or lastname">
+        </div>
+        <div class="col-xs-1">
+            <button class="btn btn-primary" (click)="onSearch()">Search</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-success pull-right" (click)="onNewUser()">New Author</button>
+        </div>
+    </div>
+</form>
+
+<br>
+
+<div style="background-color: #ffffff" id="authors-table"></div>

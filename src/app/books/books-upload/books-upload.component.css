@@ -1,0 +1,50 @@
+.book {
+    border: #4A88DD;
+    border-style: double;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.error {
+    background-color: #fbd9d9;
+}
+
+.margin20Right {
+    margin-right: 20px
+}
+
+.image-book {
+    width: 90px;
+    height: 95px;
+}
+
+.delete-icon-action {
+    color: #f44141;
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1.5em;
+    padding-right: 10px;
+}
+
+.load-icon-action {
+    color: #286090;
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1.5em;
+    padding-right: 10px;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.align-right {
+    float: right;
+}

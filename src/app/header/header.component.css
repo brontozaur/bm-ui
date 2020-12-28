@@ -1,0 +1,39 @@
+.navbar-default .navbar-nav {
+    color: #ffffff;
+}
+
+.navbar-brand {
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active {
+    color: #000000;
+    background-color: #b5d6ff;
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.navbar-default {
+    /*background-image: url("../img/library.jpg");*/
+    background-color: #286090;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #fff;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    color: #000000;
+}
+
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    color: #fff;
+}

@@ -1,0 +1,92 @@
+<h1>Edit User</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-success pull-right" (click)="saveUser(userEditForm)">Save User</button>
+        </div>
+    </div>
+</form>
+
+<br>
+<div class="container">
+    <div class="row">
+        <form #userEditForm="ngForm" (ngSubmit)="saveUser()">
+            <div class="form-group col-xs-6">
+                <label for="firstName">First name</label>
+                <input
+                        type="text"
+                        id="firstName"
+                        class="form-control"
+                        [(ngModel)]="user.firstName"
+                        name="firstName"
+                        required
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="lastName">Last name</label>
+                <input
+                        id="lastName"
+                        class="form-control"
+                        [(ngModel)]="user.lastName"
+                        name="lastName"
+                        required
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="email">E-Mail</label>
+                <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        [(ngModel)]="user.email"
+                        name="email"
+                        required
+                        email
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="role">Role</label>
+                <select name="role" id="role" class="form-control" ng-model>
+                    <option value="ADMIN">Admin</option>
+                    <option value="USER">User</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="username">Username</label>
+                <input
+                        id="username"
+                        class="form-control"
+                        [(ngModel)]="user.userName"
+                        name="username"
+                        required
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="password">Password</label>
+                <input
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        [(ngModel)]="user.password"
+                        name="password"
+                        required
+                        minlength="6"
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="id">Id</label>
+                <input
+                        id="id"
+                        class="form-control"
+                        [(ngModel)]="user.id"
+                        name="id"
+                        disabled
+                />
+            </div>
+        </form>
+    </div>
+</div>

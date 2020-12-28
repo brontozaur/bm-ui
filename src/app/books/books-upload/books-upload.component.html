@@ -1,0 +1,62 @@
+<h1>Upload books</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+        </div>
+        <div class="col-xs-6 ">
+            <button class="btn btn-success pull-right" (click)="save()">
+                Save
+            </button>
+            <button class="btn btn-success pull-right margin10Right" (click)="loadBooks.click()">
+                <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
+                Load books
+            </button>
+            <input
+                    style="display: none"
+                    type="file" (change)="load($event)" multiple
+                    #loadBooks>
+        </div>
+    </div>
+</form>
+
+<br>
+<div class="container">
+    <div class="row">
+        <div *ngFor="let book of this.books; let i = index" class="book">
+            <div class="col-xs-4">
+                <label class="margin20Right">{{i+1}}.</label>
+                <img [src]="defaultImage" *ngIf="!book.image" class="margin20Right image-book">
+                <img [src]="book.image" *ngIf="book.image" class="margin20Right image-book">
+                <label>{{book.title}}</label>
+            </div>
+            <div [hidden]="book.file" class="col-xs-3 full-height error">
+                <div class="center" (click)="fileEpubInput.click()">
+                    <label class="align-right" style="cursor:pointer">Load book(epub)</label>
+                    <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
+                    <input
+                            style="display: none"
+                            type="file" (change)="selectEpub(book, $event)"
+                            #fileEpubInput>
+                </div>
+            </div>
+
+            <div class="col-xs-2 full-height align-right">
+                <div class="center" (click)="deleteBook(book)">
+                    <label class="align-right" style="cursor:pointer">Delete</label>
+                    <i style="cursor:pointer" class="fas fa-trash-alt delete-icon-action"></i>
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 full-height align-right">
+                <div class="center" (click)="fileInput.click()">
+                    <label class="align-right" style="cursor:pointer">Change image</label>
+                    <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
+                    <input
+                            style="display: none"
+                            type="file" (change)="selectFile(book, $event)"
+                            #fileInput>
+                </div>
+            </div>

@@ -1,0 +1,62 @@
+.tabulator {
+    font-size: 16px;
+    border: none;
+}
+
+.tabulator .tabulator-header .tabulator-col {
+    background-color: #286090;
+}
+
+.tabulator .tabulator-footer {
+    border-top: 3px solid #ffffff;
+    background-color: #286090;
+}
+
+.tabulator .tabulator-header {
+    border-bottom: 3px solid #ffffff;
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
+    cursor: pointer;
+    background-color: #286090;
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable[aria-sort="asc"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+    border-top: none;
+    border-bottom: 6px solid #ffffff;
+}
+
+.tabulator-row.tabulator-row-even {
+    background-color: #EBECF2;
+}
+
+.tabulator-row.tabulator-selectable:hover {
+    background-color: #B9BFDF;
+    cursor: pointer;
+}
+
+.tabulator-row.tabulator-selected {
+    background-color: #9ABCEA !important;
+}
+
+.status {
+    width: 16px;
+    height: 16px;
+    border-radius: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
+    background: blue;
+}
+
+.red {
+    background: red;
+}
+
+.green {
+    background: green;
+}
+
+.yellow {
+    background: yellow;
+}

@@ -1,0 +1,132 @@
+<h1>Edit Book</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-success pull-right" (click)="saveBook(bookEditForm)">Save Book</button>
+        </div>
+    </div>
+</form>
+<br>
+<div class="container">
+    <div class="row">
+        <form #bookEditForm="ngForm" (ngSubmit)="saveBook()">
+            <div class="form-group col-xs-6">
+                <label for="title">Title</label>
+                <input
+                        type="text"
+                        id="title"
+                        class="form-control"
+                        [(ngModel)]="book.title"
+                        name="firstName"
+                        required
+                />
+                <br>
+                <label>Authors</label>
+                <datalist id="authors">
+                    <option value="Mihai Eminescu">
+                    <option value="Emil Garleanu">
+                    <option value="Vasile Alecsandri">
+                </datalist>
+                <div *ngFor="let author of book.authors; let i = index">
+                    <br>
+                    <div class="col-xs-11 no-padding-left">
+                        <input list="authors" name="author-choice"
+                               [(ngModel)]="author.firstName"
+                               class="form-control">
+                        <br>
+                    </div>
+                    <div class="col-xs-1 no-padding-right">
+                        <i class="fas fa-plus fa-2x" *ngIf="i == 0" style="color:#449d44" (click)="addAuthor()"></i>
+                        <i class="fas fa-minus fa-2x" *ngIf="i != 0" style="color:#e30d0d"
+                           (click)="deleteAuthor(i)"></i>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <div class="col-xs-6 no-padding-left">
+                        <label for="year">Publish year</label>
+                        <input
+                                type="text"
+                                id="year"
+                                class="form-control"
+                                [(ngModel)]="book.year"
+                                name="firstName"
+                                required
+                        />
+                    </div>
+                    <div class="col-xs-6 no-padding-right">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" class="form-control"
+                                [(ngModel)]="book.category">
+                            <option value="FANTASY">SF</option>
+                            <option value="SF">FANTASY</option>
+                            <option value="DRAMA">DRAMA</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <div class="col-xs-6 no-padding-left">
+                        <br>
+                        <label for="isbn">ISBN</label>
+                        <input
+                                type="text"
+                                id="isbn"
+                                class="form-control"
+                                [(ngModel)]="book.isbn"
+                                name="isbn"
+                                required
+                        />
+                    </div>
+                    <div class="col-xs-6 no-padding-right">
+                        <br>
+                        <label for="id">Id</label>
+                        <input
+                                type="text"
+                                id="id"
+                                class="form-control"
+                                [(ngModel)]="book.id"
+                                name="id" disabled
+                        />
+                        <br>
+                    </div>
+                </div>
+                <div>
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3" name="description"
+                              [(ngModel)]="book.description"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-6">
+                <img [src]="defaultImage" *ngIf="!book.image" class="image-book center">
+                <img [src]="book.image" *ngIf="book.image" class="image-book center">
+                <div class="center">
+                    <br>
+                    <button class="btn btn-primary center" (click)="fileInput.click()">
+                        <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
+                        Change image
+                    </button>
+                    <input
+                            style="display: none"
+                            type="file" (change)="selectFile($event)"
+                            #fileInput>
+                </div>
+                <div class="center">
+                    <br>
+                    <label>Created at:</label> {{book.createdAt | date: 'dd/MM/yyyy hh:mm:ss'}}
+                    <br>
+                    <label>Created by:</label> {{book.createdBy}}
+                    <br>
+                    <label>Modified at:</label> {{book.modifiedAt | date: 'dd/MM/yyyy hh:mm:ss'}}
+                    <br>
+                    <label>Modified by:</label> {{book.modifiedBy}}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<h1>Edit Author</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-success pull-right" (click)="saveAuthor(authorEditForm)">Save Author</button>
+        </div>
+    </div>
+</form>
+
+<br>
+<div class="container">
+    <div class="row">
+        <form #authorEditForm="ngForm" (ngSubmit)="saveAuthor()">
+            <div class="form-group col-xs-6">
+                <label for="firstName">First name</label>
+                <input
+                        type="text"
+                        id="firstName"
+                        class="form-control"
+                        [(ngModel)]="author.firstName"
+                        name="firstName"
+                        required
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="lastName">Last name</label>
+                <input
+                        id="lastName"
+                        class="form-control"
+                        [(ngModel)]="author.lastName"
+                        name="lastName"
+                        required
+                />
+            </div>
+        </form>
+    </div>
+</div>
