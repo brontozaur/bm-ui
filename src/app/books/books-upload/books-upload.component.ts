@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BookUpload} from './book-upload.model';
 import {BooksService} from '../books.service';
+import {NotificationService} from "../../notification.service";
 
 @Component({
     selector: 'app-book-upload',
@@ -17,7 +18,8 @@ export class BooksUploadComponent implements OnInit {
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
-                private service: BooksService) {
+                private service: BooksService,
+                private notification: NotificationService) {
     }
 
     ngOnInit() {
@@ -30,6 +32,7 @@ export class BooksUploadComponent implements OnInit {
     selectFile(bookSelected: BookUpload, event) {
         if (!event.target.files[0] || event.target.files[0].length == 0) {
             this.msg = 'You must select an image';
+            this.notification.showErrorNotification(this.msg);
             return;
         }
 
@@ -37,6 +40,7 @@ export class BooksUploadComponent implements OnInit {
 
         if (mimeType.match(/image\/*/) == null) {
             this.msg = 'Only images are supported';
+            this.notification.showErrorNotification(this.msg);
             return;
         }
 
@@ -71,6 +75,7 @@ export class BooksUploadComponent implements OnInit {
 
         if (!isBook && (mimeType && mimeType.match(/image\/*/) == null)) {
             this.msg = 'Only images or epub are supported';
+            this.notification.showErrorNotification(this.msg);
             return;
         }
         var reader = new FileReader();
@@ -96,6 +101,7 @@ export class BooksUploadComponent implements OnInit {
     load(event) {
         if (!event.target.files[0] || event.target.files[0].length == 0) {
             this.msg = 'You must select a file';
+            this.notification.showErrorNotification(this.msg);
             return;
         }
 
@@ -110,6 +116,7 @@ export class BooksUploadComponent implements OnInit {
     save() {
         if (!this.isFormValid()) {
             console.log("Invalid form");
+            this.notification.showErrorNotification("Invalid form. Please check loaded files.");
             return;
         }
         this.service.uploadBooks(this.bookMap);
@@ -120,7 +127,7 @@ export class BooksUploadComponent implements OnInit {
         if (this.bookMap.size == 0)
             valid = false;
         Array.from(this.bookMap.values()).forEach(value => {
-            if (typeof value.epubFile === 'undefined') {
+            if (typeof value.epubFile === 'undefined' || value.epubFile == null) {
                 valid = false;
             }
         });

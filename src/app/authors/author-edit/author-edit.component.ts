@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Author} from '../author.model';
 import {AuthorsService} from '../authors.service';
+import {NotificationService} from "../../notification.service";
 
 @Component({
     selector: 'app-user-detail',
@@ -13,7 +14,8 @@ export class AuthorEditComponent implements OnInit {
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
-                private service: AuthorsService) {
+                private service: AuthorsService,
+                private notification: NotificationService) {
     }
 
     ngOnInit() {
@@ -23,9 +25,11 @@ export class AuthorEditComponent implements OnInit {
     }
 
     saveAuthor(authorEditForm) {
-        if (authorEditForm.form.status === 'VALID') {
-            this.service.saveAuthor(this.author, this.goBack());
+        if (authorEditForm.form.status !== 'VALID') {
+            this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
+            return;
         }
+        this.service.saveAuthor(this.author, this.goBack());
     }
 
     goBack() {

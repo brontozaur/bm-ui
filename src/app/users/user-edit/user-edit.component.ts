@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserBook} from '../user-book.model';
 import {UsersService} from '../users.service';
+import {NotificationService} from "../../notification.service";
 
 @Component({
     selector: 'app-user-detail',
@@ -13,7 +14,8 @@ export class UserEditComponent implements OnInit {
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
-                private service: UsersService) {
+                private service: UsersService,
+                private notification: NotificationService) {
     }
 
     ngOnInit() {
@@ -23,9 +25,11 @@ export class UserEditComponent implements OnInit {
     }
 
     saveUser(userEditForm) {
-        if (userEditForm.form.status === 'VALID') {
-            this.service.saveUser(this.user, this.goBack());
+        if (userEditForm.form.status !== 'VALID') {
+            this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
+            return;
         }
+        this.service.saveUser(this.user, this.goBack());
     }
 
     goBack() {

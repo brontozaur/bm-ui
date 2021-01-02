@@ -1,10 +1,12 @@
 import {Book} from './book.model';
 import {HttpClient} from "@angular/common/http";
 import {UserBook} from "../users/user-book.model";
+import {NotificationService} from "../notification.service";
 
 export class BooksService {
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private notification: NotificationService) {
     }
 
     getBook(id: number) {
@@ -17,6 +19,7 @@ export class BooksService {
                 callbackFcn();
             },
             error: error => {
+                this.notification.showErrorNotification("There was an error!");
                 console.error('There was an error!', error);
             }
         })
@@ -26,19 +29,22 @@ export class BooksService {
         const formData = new FormData();
         formData.append('file', file);
 
-        // this.http.post<any>('http://localhost:8080/api/v1/books/upload', formData, {responseType: 'text'}).subscribe({
-        //     next: data => {
-        //         book.image = data;
-        //     },
-        //     error: error => {
-        //         console.error('There was an error!', error);
-        //     }
-        // })
+        this.http.post<any>('http://localhost:8080/api/v1/books/upload', formData,
+            {responseType: 'text' as 'json'}).subscribe({
+             next: data => {
+                 book.image = data;
+             },
+             error: error => {
+                 this.notification.showErrorNotification("There was an error!");
+                 console.error('There was an error!', error);
+             }
+         })
     }
 
     deleteBook(id: number) {
         return this.http.delete('http://localhost:8080/api/v1/books/' + id)
             .subscribe(() => {
+                this.notification.showOKNotification("Deleted successfully!");
                 console.log('Delete successful');
             });
     }
@@ -53,9 +59,10 @@ export class BooksService {
         this.http.post<any>('http://localhost:8080/api/v1/books/upload-books', formData)
             .subscribe({
                 next: data => {
-                    console.log("fffee");
+                    console.log("Uploaded books");
                 },
                 error: error => {
+                    this.notification.showErrorNotification("There was an error!");
                     console.error('There was an error!', error);
                 }
             })

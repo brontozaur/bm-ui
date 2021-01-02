@@ -60,3 +60,13 @@
 .yellow {
     background: yellow;
 }
+
+.error-custom-style{
+    background-color:brown;
+    color:white;
+}
+
+.ok-custom-style{
+    background-color:green;
+    color:white;
+}

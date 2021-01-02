@@ -1,9 +1,11 @@
 import {Author} from './author.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {NotificationService} from "../notification.service";
 
 export class AuthorsService {
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient,
+                private notification: NotificationService) {}
 
     getAuthor(id: number) {
         return this.http.get<Author>('http://localhost:8080/api/v1/authors/' + id);
@@ -19,6 +21,7 @@ export class AuthorsService {
                 callbackFcn();
             },
             error: error => {
+                this.notification.showErrorNotification("There was an error!");
                 console.error('There was an error!', error);
             }
         })
@@ -26,7 +29,9 @@ export class AuthorsService {
 
     deleteAuthor(id: number) {
         return this.http.delete('http://localhost:8080/api/v1/authors/' + id)
-            .subscribe(() => {console.log('Delete successful');});
+            .subscribe(() => {
+                this.notification.showOKNotification("Deleted successfully!");
+                console.log('Delete successful');});
     }
 
     getAuthors() {

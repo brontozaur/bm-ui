@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Book} from '../book.model';
 import {BooksService} from '../books.service';
 import {Author} from '../../authors/author.model';
-import {AuthorsService} from "../../authors/authors.service";
+import {NotificationService} from "../../notification.service";
 
 @Component({
     selector: 'app-book-detail',
@@ -20,7 +20,8 @@ export class BookEditComponent implements OnInit {
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
-                private service: BooksService) {
+                private service: BooksService,
+                private notification: NotificationService) {
     }
 
     ngOnInit() {
@@ -33,9 +34,11 @@ export class BookEditComponent implements OnInit {
     }
 
     saveBook(bookEditForm) {
-        if (bookEditForm.form.status === 'VALID') {
-            this.service.saveBook(this.book, this.goBack());
+        if (bookEditForm.form.status !== 'VALID') {
+            this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
+            return;
         }
+        this.service.saveBook(this.book, this.goBack());
     }
 
     goBack() {
