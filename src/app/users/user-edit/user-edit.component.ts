@@ -24,8 +24,7 @@ export class UserEditComponent implements OnInit {
 
     saveUser(userEditForm) {
         if (userEditForm.form.status === 'VALID') {
-            this.service.saveUser(this.user);
-            this.goBack();
+            this.service.saveUser(this.user, this.goBack());
         }
     }
 

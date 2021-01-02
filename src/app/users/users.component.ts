@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LoggingService} from '../logging.service';
 import Tabulator from 'tabulator-tables';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UsersService} from './users.service';
+import {UserBook} from "./user-book.model";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'app-users',
@@ -10,18 +12,19 @@ import {UsersService} from './users.service';
     styleUrls: ['./users.component.css',
         '../app.component.css']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
+
+    private users: UserBook[] = [];
+    private table;
+    searchTerm: string = "";
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private loggingService: LoggingService,
                 private usersServer: UsersService
-    ) {
-    }
+    ){}
 
     ngOnInit() {
-        var tabledata = this.usersServer.getUsers();
-
         var editIcon = function (cell, formatterParams, onRendered) {
             return '<i class=\'fas fa-pencil-alt\'></i>';
         };
@@ -30,14 +33,30 @@ export class UsersComponent implements OnInit {
             this.router.navigate(['edit-users/' + id]);
         };
 
-        var table = new Tabulator('#users-table', {
-            data: tabledata,
+        this.table = new Tabulator('#users-table', {
+            data: this.users,
             height: 'calc(100vh - 250px)',
             layout: 'fitColumns',
             addRowPos: 'top',
-            pagination: 'local',
-            paginationSize: 6,
-            paginationSizeSelector: [3, 6, 8, 10],
+            ajaxFiltering: true,
+            pagination: "remote",
+            ajaxConfig: "POST",
+            paginationDataSent: { // override the sent params for pagination
+                "page": "pageNumber",
+                "size": "pageSize"
+            },
+            paginationDataReceived: { // override the received pagination default properties
+                "last_page": "totalPages",
+                "current_page": "number",
+                "data": "content"
+            },
+            paginationSizeSelector: [5, 10, 15, 20, 50, 100, 500, 1000],
+            ajaxURL: "http://localhost:8080/api/v1/users/filter",
+            ajaxURLGenerator: (url, config, params) => {
+                params.searchTerm = this.searchTerm;
+                return url + "?params=" + encodeURI(JSON.stringify(params));
+            },
+            paginationSize: 20,
             initialSort: [
                 {column: 'name', dir: 'asc'},
             ],
@@ -47,29 +66,24 @@ export class UsersComponent implements OnInit {
                 {title: 'First name', field: 'firstName'},
                 {title: 'Last name', field: 'lastName'},
                 {title: 'Role', field: 'role'},
-                {title: 'Username', field: 'userName'},
+                {title: 'Username', field: 'username'},
                 {title: 'Password', field: 'password'},
                 {title: 'Email', field: 'email'},
-                {
-                    title: 'Delete',
-                    formatter: 'buttonCross',
-                    align: 'center',
-                    width: 100,
-                    headerSort: false,
-                    cellClick: function (e, cell) {
-                        cell.getRow().delete();
-                    }
-                },
+                {title: 'Delete', formatter: 'buttonCross', align: 'center', width: 100, headerSort: false},
             ],
             rowDblClick: (e, row) => {
                 this.router.navigate([`/edit-users/${row.getData().id}`]);
             },
             cellClick: (e, cell) => {
                 if (cell.getColumn().getDefinition().title == "Edit") {
-                    this.router.navigate([`/edit-users/${cell.getRow().getData().id}`]);
+                    this.router.navigate([`/edit-users/${cell.getData().id}`]);
+                } else if(cell.getColumn().getDefinition().title == "Delete"){
+                    this.usersServer.deleteUser(cell.getData().id);
+                    cell.getRow().delete();
                 }
             }
         });
+        this.table.setData();
     }
 
     onNewUser() {
@@ -77,7 +91,8 @@ export class UsersComponent implements OnInit {
     }
 
     onSearch() {
-
+        this.table.setData();
     }
 
+    ngOnDestroy() {}
 }

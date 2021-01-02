@@ -11,11 +11,11 @@ import {AuthInterceptorService} from './auth/auth-interceptor.service';
         UsersService,
         BooksService,
         AuthorsService,
-        {
+        /*{
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptorService,
             multi: true
-        }
+        }*/
     ]
 })
 export class CoreModule {

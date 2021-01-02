@@ -3,7 +3,7 @@ export class UserBook {
     public firstName: string;
     public lastName: string;
     public role: string;
-    public userName: string;
+    public username: string;
     public password: string;
     public email: string;
 
@@ -11,14 +11,14 @@ export class UserBook {
                 firstName: string,
                 lastName: string,
                 role: string,
-                userName: string,
+                username: string,
                 password: string,
                 email: string) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.email = email;
     }

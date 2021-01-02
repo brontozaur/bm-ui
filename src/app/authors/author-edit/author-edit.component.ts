@@ -24,8 +24,7 @@ export class AuthorEditComponent implements OnInit {
 
     saveAuthor(authorEditForm) {
         if (authorEditForm.form.status === 'VALID') {
-            this.service.saveAuthor(this.author);
-            this.goBack();
+            this.service.saveAuthor(this.author, this.goBack());
         }
     }
 

@@ -10,10 +10,7 @@ import {BooksService} from '../books.service';
         '../../app.component.css']
 })
 export class BooksUploadComponent implements OnInit {
-    public books: Array<BookUpload> = [
-        new BookUpload('Alice in tara minunilor', null, null),
-        new BookUpload('Singur pe lume', null, null)
-    ];
+    public books: Array<BookUpload> = [];
     defaultImage = '../../../assets/img/no-image.png';
     bookMap = new Map();
     msg = '';
@@ -57,12 +54,12 @@ export class BooksUploadComponent implements OnInit {
     }
 
     selectEpub(bookSelected: BookUpload, event) {
-        this.addFile(event.target.files[0]);
+        var file = event.target.files[0];
+        this.addFile(file, bookSelected.title);
     }
 
-    addFile(file) {
+    addFile(file, bookName) {
         var mimeType = file.type;
-        var bookName = file.name.split('.')[0];
         var isBook = file.name.split('.')[1] === 'epub';
 
         if (!isBook && (mimeType && mimeType.match(/image\/*/) == null)) {
@@ -98,8 +95,30 @@ export class BooksUploadComponent implements OnInit {
         }
 
         for (const i in event.target.files) {
-            this.addFile(event.target.files[i]);
+            var file = event.target.files[i];
+            var bookName = file.name.split('.')[0];
+            this.addFile(file, bookName);
         }
+    }
+
+    save() {
+        if(!this.isFormValid()) {
+            console.log("Invalid form");
+            return;
+        }
+        this.service.uploadBooks(this.bookMap);
+    }
+
+    isFormValid() {
+        var valid = true;
+        if(this.bookMap.size == 0)
+            valid = false;
+        Array.from(this.bookMap.values()).forEach(value => {
+            if(value.file == undefined) {
+                valid = false;
+            }
+        });
+        return valid;
     }
 
     /*

@@ -7,13 +7,13 @@ export class Book {
     public isbn: string;
     public year: number;
     public category: string;
-    public description: string;
+    public description: string | ArrayBuffer;
     public image: string | ArrayBuffer;
     public status: string;
     public createdAt: Date;
     public createdBy: string;
-    public modifiedAt: Date;
-    public modifiedBy: string;
+    public updatedAt: Date;
+    public updatedBy: string;
 
     constructor(id: number,
                 title: string,
@@ -21,13 +21,13 @@ export class Book {
                 isbn: string,
                 year: number,
                 category: string,
-                description: string,
+                description: string | ArrayBuffer,
                 image: string | ArrayBuffer,
                 status: string,
                 createdAt: Date,
                 createdBy: string,
-                modifiedAt: Date,
-                modifiedBy: string) {
+                updatedAt: Date,
+                updatedBy: string) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -39,7 +39,7 @@ export class Book {
         this.status = status;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
-        this.modifiedAt = modifiedAt;
-        this.modifiedBy = modifiedBy;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
     }
 }

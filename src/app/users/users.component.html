@@ -6,7 +6,8 @@
             <label for="search" class="control-label">Search</label>
         </div>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="search" placeholder="by firstname or lastname">
+            <input type="text" class="form-control" [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}"
+                id="search" placeholder="by firstname or lastname">
         </div>
         <div class="col-xs-1">
             <button class="btn btn-primary" (click)="onSearch()">Search</button>

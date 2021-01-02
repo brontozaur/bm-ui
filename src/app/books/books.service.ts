@@ -1,48 +1,61 @@
-import {Subject} from 'rxjs';
 import {Book} from './book.model';
-import {Author} from '../authors/author.model';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {UserBook} from "../users/user-book.model";
 
 export class BooksService {
-    booksChanged = new Subject<Book[]>();
 
-    private books: Book[] = [
-        new Book(1, 'America', [new Author(1, 'Franz', 'Kafka')], '978545145415', 2000, 'SF', 'Description', null, 'GREEN', new Date(), 'Mary',
-            new Date(), 'oli'),
-        new Book(2, 'Batranul si marea', [new Author(2, 'Ernest', 'Hemingway')], '978545145412', 1980, 'FANTASY', 'Description',
-            null, 'YELLOW', new Date(), 'oli', new Date(), 'oli'),
-        new Book(3, 'Parisul in secolul XX', [new Author(3, 'Jules', 'Verne')], '978545145413', 1999, 'DRAMA', 'Description',
-            null, 'RED', new Date(), 'eugen', new Date(), 'oli'),
-        new Book(4, 'Singur pe lume', [new Author(4, 'Hector', 'Malot')], '978545145414', 2001, 'SF', 'Description', null, 'GREEN',
-            new Date(), 'Mary', new Date(), 'oli'),
-        new Book(5, 'Cocosatul de la Notre-Dame', [new Author(5, 'Victor', 'Hugo'), new Author(6, 'Mihai', 'Eminescu')],
-            '978545145411', 2002, 'SF', 'Description', null, 'YELLOW', new Date(), 'oli.bob@gmail.com', new Date(), 'oli')
-    ];
-
-    setBooks(books: Book[]) {
-        this.books = books;
-        this.booksChanged.next(this.books.slice());
-    }
-
-    getBooks() {
-        return this.books.slice();
-    }
+    constructor(private http: HttpClient) {}
 
     getBook(id: number) {
-        return this.books[id - 1];
+        return this.http.get<Book>('http://localhost:8080/api/v1/books/' + id);
     }
 
-    saveBook(book: Book) {
-        if (book.id) {
-            this.books[book.id - 1] = book;
-            this.booksChanged.next(this.books.slice());
-        } else {
-            this.books.push(book);
-            this.booksChanged.next(this.books.slice());
-        }
+    saveBook(book: Book, callbackFcn) {
+        this.http.post<UserBook>('http://localhost:8080/api/v1/books', book).subscribe({
+            next: data => {
+                callbackFcn();
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        })
     }
 
-    deleteBook(index: number) {
-        this.books.splice(index, 1);
-        this.booksChanged.next(this.books.slice());
+    uploadImage(file, book) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        this.http.post<any>('http://localhost:8080/api/v1/books/upload', formData, {responseType: 'text'}).subscribe({
+            next: data => {
+                book.image = data;
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        })
+    }
+
+    deleteBook(id: number) {
+        return this.http.delete('http://localhost:8080/api/v1/books/' + id)
+            .subscribe(() => {console.log('Delete successful');});
+    }
+
+    uploadBooks(bookMap) {
+        const formData = new FormData();
+        Array.from(bookMap.entries()).forEach(value => {
+            formData.append("images", value[1].file);
+        });
+
+        this.http.post<any>('http://localhost:8080/api/v1/books/upload-books', formData,
+            {
+                headers: {'Content-Type': undefined}
+            }).subscribe({
+            next: data => {
+                console.log("fffee");
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        })
     }
 }

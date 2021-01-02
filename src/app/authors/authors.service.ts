@@ -1,44 +1,35 @@
-import {Subject} from 'rxjs';
 import {Author} from './author.model';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class AuthorsService {
-    authorsChanged = new Subject<Author[]>();
 
-    private authors: Author[] = [
-        new Author(1, 'Franz', 'Kafka'),
-        new Author(2, 'Ernest', 'Hemingway'),
-        new Author(3, 'Jules', 'Verne'),
-        new Author(4, 'Hector', 'Malot'),
-        new Author(5, 'Cezar', 'Petrescu')
-    ];
+    constructor(private http: HttpClient) {}
 
-    //private authors: Author[] = [];
+    getAuthor(id: number) {
+        return this.http.get<Author>('http://localhost:8080/api/v1/authors/' + id);
+    }
 
-    setAuthors(authors: Author[]) {
-        this.authors = authors;
-        this.authorsChanged.next(this.authors.slice());
+    saveAuthor(author: Author, callbackFcn) {
+        this.http.post<Author>('http://localhost:8080/api/v1/authors', author, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }).subscribe({
+            next: data => {
+                callbackFcn();
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        })
+    }
+
+    deleteAuthor(id: number) {
+        return this.http.delete('http://localhost:8080/api/v1/authors/' + id)
+            .subscribe(() => {console.log('Delete successful');});
     }
 
     getAuthors() {
-        return this.authors.slice();
-    }
-
-    getAuthor(id: number) {
-        return this.authors[id - 1];
-    }
-
-    saveAuthor(author: Author) {
-        if (author.id) {
-            this.authors[author.id - 1] = author;
-            this.authorsChanged.next(this.authors.slice());
-        } else {
-            this.authors.push(author);
-            this.authorsChanged.next(this.authors.slice());
-        }
-    }
-
-    deleteAuthor(index: number) {
-        this.authors.splice(index, 1);
-        this.authorsChanged.next(this.authors.slice());
+        return this.http.get<Author>('http://localhost:8080/api/v1/authors/all');
     }
 }

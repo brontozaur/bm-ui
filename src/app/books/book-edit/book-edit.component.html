@@ -13,7 +13,7 @@
 <br>
 <div class="container">
     <div class="row">
-        <form #bookEditForm="ngForm" (ngSubmit)="saveBook()">
+        <form #bookEditForm="ngForm">
             <div class="form-group col-xs-6">
                 <label for="title">Title</label>
                 <input
@@ -21,22 +21,18 @@
                         id="title"
                         class="form-control"
                         [(ngModel)]="book.title"
-                        name="firstName"
+                        name="title"
                         required
                 />
                 <br>
                 <label>Authors</label>
-                <datalist id="authors">
-                    <option value="Mihai Eminescu">
-                    <option value="Emil Garleanu">
-                    <option value="Vasile Alecsandri">
-                </datalist>
                 <div *ngFor="let author of book.authors; let i = index">
                     <br>
                     <div class="col-xs-11 no-padding-left">
-                        <input list="authors" name="author-choice"
-                               [(ngModel)]="author.firstName"
-                               class="form-control">
+                        <input type="text" name="author" class="form-control" list="authors" value="{{getCompleteName(author)}}" (change)="saveSelectedAuthor($event, i)">
+                        <datalist id="authors">
+                            <option *ngFor="let authorOption of authors" [value]="getCompleteName(authorOption)" >{{getCompleteName(authorOption)}}</option>
+                        </datalist>
                         <br>
                     </div>
                     <div class="col-xs-1 no-padding-right">
@@ -62,8 +58,8 @@
                         <label for="category">Category</label>
                         <select name="category" id="category" class="form-control"
                                 [(ngModel)]="book.category">
-                            <option value="FANTASY">SF</option>
-                            <option value="SF">FANTASY</option>
+                            <option value="SF">SF</option>
+                            <option value="FANTASY">FANTASY</option>
                             <option value="DRAMA">DRAMA</option>
                         </select>
                     </div>
@@ -103,8 +99,8 @@
             </div>
 
             <div class="form-group col-xs-6">
-                <img [src]="defaultImage" *ngIf="!book.image" class="image-book center">
-                <img [src]="book.image" *ngIf="book.image" class="image-book center">
+                <img [src]="defaultImage" *ngIf="!imageFile" class="image-book center">
+                <img [src]="imageFile" *ngIf="imageFile" class="image-book center">
                 <div class="center">
                     <br>
                     <button class="btn btn-primary center" (click)="fileInput.click()">
@@ -118,13 +114,13 @@
                 </div>
                 <div class="center">
                     <br>
-                    <label>Created at:</label> {{book.createdAt | date: 'dd/MM/yyyy hh:mm:ss'}}
+                    <label>Created at:</label> {{book.createdAt}}
                     <br>
                     <label>Created by:</label> {{book.createdBy}}
                     <br>
-                    <label>Modified at:</label> {{book.modifiedAt | date: 'dd/MM/yyyy hh:mm:ss'}}
+                    <label>Modified at:</label> {{book.updatedAt}}
                     <br>
-                    <label>Modified by:</label> {{book.modifiedBy}}
+                    <label>Modified by:</label> {{book.updatedBy}}
                 </div>
             </div>
         </form>

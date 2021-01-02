@@ -1,44 +1,27 @@
-import {Subject} from 'rxjs';
 import {UserBook} from './user-book.model';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class UsersService {
-    usersChanged = new Subject<UserBook[]>();
 
-    private users: UserBook[] = [
-        new UserBook(1, 'Oli', 'Bob', 'ADMIN', 'oli', 'oli', 'oli.bob@gmail.com'),
-        new UserBook(2, 'Mary', 'May', 'USER', 'mary', 'oli', 'oli.bob@gmail.com'),
-        new UserBook(3, 'Christine', 'Lobowski', 'USER', 'cri', 'oli', 'oli.bob@gmail.com'),
-        new UserBook(4, 'Brendon', 'Philips', 'USER', 'brendon', 'oli', 'oli.bob@gmail.com'),
-        new UserBook(5, 'Margret', 'Marmajuke', 'USER', 'margret', 'oli', 'oli.bob@gmail.com')
-    ];
-
-    //private users: UserBook[] = [];
-
-    setUsers(users: UserBook[]) {
-        this.users = users;
-        this.usersChanged.next(this.users.slice());
-    }
-
-    getUsers() {
-        return this.users.slice();
-    }
+    constructor(private http: HttpClient) {}
 
     getUser(id: number) {
-        return this.users[id - 1];
+        return this.http.get<UserBook>('http://localhost:8080/api/v1/users/' + id)
     }
 
-    saveUser(user: UserBook) {
-        if (user.id) {
-            this.users[user.id - 1] = user;
-            this.usersChanged.next(this.users.slice());
-        } else {
-            this.users.push(user);
-            this.usersChanged.next(this.users.slice());
-        }
+    saveUser(user: UserBook, callbackFcn) {
+        this.http.post<UserBook>('http://localhost:8080/api/v1/users', user).subscribe({
+            next: data => {
+                callbackFcn();
+            },
+            error: error => {
+                console.error('There was an error!', error);
+            }
+        })
     }
 
-    deleteUser(index: number) {
-        this.users.splice(index, 1);
-        this.usersChanged.next(this.users.slice());
+    deleteUser(id: number) {
+        return this.http.delete('http://localhost:8080/api/v1/users/' + id)
+            .subscribe(() => {console.log('Delete successful');});
     }
 }
