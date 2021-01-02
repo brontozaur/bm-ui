@@ -31,7 +31,7 @@
                 <img [src]="book.image" *ngIf="book.image" class="margin20Right image-book">
                 <label>{{book.title}}</label>
             </div>
-            <div [hidden]="book.file" class="col-xs-3 full-height error">
+            <div [hidden]="book.epubFile" class="col-xs-3 full-height error">
                 <div class="center" (click)="fileEpubInput.click()">
                     <label class="align-right" style="cursor:pointer">Load book(epub)</label>
                     <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>

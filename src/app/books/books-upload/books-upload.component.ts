@@ -46,6 +46,7 @@ export class BooksUploadComponent implements OnInit {
         reader.onload = (_event) => {
             this.msg = '';
             bookSelected.image = reader.result;
+            bookSelected.imageFile = event.target.files[0];
         };
     }
 
@@ -60,7 +61,13 @@ export class BooksUploadComponent implements OnInit {
 
     addFile(file, bookName) {
         var mimeType = file.type;
-        var isBook = file.name.split('.')[1] === 'epub';
+        var isBook = false;
+        if (file && file.name) {
+            let extension = file.name.split('.');
+            if (extension.length > 0) {
+                isBook = extension[1] === 'epub';
+            }
+        }
 
         if (!isBook && (mimeType && mimeType.match(/image\/*/) == null)) {
             this.msg = 'Only images or epub are supported';
@@ -75,14 +82,12 @@ export class BooksUploadComponent implements OnInit {
 
         reader.onload = (_event) => {
             var book = this.bookMap.get(bookName);
-            if (book == undefined) {
-                book = new BookUpload(bookName, null, null);
+            if (typeof book == "undefined") {
+                book = new BookUpload(bookName, null, !isBook ? file : null, isBook ? file : null);
                 this.bookMap.set(bookName, book);
                 this.books.push(book);
             }
-            if (isBook) {
-                book.file = reader.result;
-            } else {
+            if (!isBook) {
                 book.image = reader.result;
             }
         };
@@ -96,13 +101,14 @@ export class BooksUploadComponent implements OnInit {
 
         for (const i in event.target.files) {
             var file = event.target.files[i];
-            var bookName = file.name.split('.')[0];
-            this.addFile(file, bookName);
+            if (file && file.name) {
+                this.addFile(file, file.name);
+            }
         }
     }
 
     save() {
-        if(!this.isFormValid()) {
+        if (!this.isFormValid()) {
             console.log("Invalid form");
             return;
         }
@@ -111,21 +117,13 @@ export class BooksUploadComponent implements OnInit {
 
     isFormValid() {
         var valid = true;
-        if(this.bookMap.size == 0)
+        if (this.bookMap.size == 0)
             valid = false;
         Array.from(this.bookMap.values()).forEach(value => {
-            if(value.file == undefined) {
+            if (typeof value.epubFile === 'undefined') {
                 valid = false;
             }
         });
         return valid;
     }
-
-    /*
-    const uploadData = new FormData();
-    uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
-    this.http.post('my-backend.com/file-upload', uploadData)
-      .subscribe(...);
-     */
-
 }

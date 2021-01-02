@@ -1,10 +1,11 @@
 import {Book} from './book.model';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {UserBook} from "../users/user-book.model";
 
 export class BooksService {
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+    }
 
     getBook(id: number) {
         return this.http.get<Book>('http://localhost:8080/api/v1/books/' + id);
@@ -25,37 +26,38 @@ export class BooksService {
         const formData = new FormData();
         formData.append('file', file);
 
-        this.http.post<any>('http://localhost:8080/api/v1/books/upload', formData, {responseType: 'text'}).subscribe({
-            next: data => {
-                book.image = data;
-            },
-            error: error => {
-                console.error('There was an error!', error);
-            }
-        })
+        // this.http.post<any>('http://localhost:8080/api/v1/books/upload', formData, {responseType: 'text'}).subscribe({
+        //     next: data => {
+        //         book.image = data;
+        //     },
+        //     error: error => {
+        //         console.error('There was an error!', error);
+        //     }
+        // })
     }
 
     deleteBook(id: number) {
         return this.http.delete('http://localhost:8080/api/v1/books/' + id)
-            .subscribe(() => {console.log('Delete successful');});
+            .subscribe(() => {
+                console.log('Delete successful');
+            });
     }
 
     uploadBooks(bookMap) {
         const formData = new FormData();
         Array.from(bookMap.entries()).forEach(value => {
-            formData.append("images", value[1].file);
+            formData.append("files[]", value[1].epubFile);
+            formData.append("images[]", value[1].imageFile);
         });
 
-        this.http.post<any>('http://localhost:8080/api/v1/books/upload-books', formData,
-            {
-                headers: {'Content-Type': undefined}
-            }).subscribe({
-            next: data => {
-                console.log("fffee");
-            },
-            error: error => {
-                console.error('There was an error!', error);
-            }
-        })
+        this.http.post<any>('http://localhost:8080/api/v1/books/upload-books', formData)
+            .subscribe({
+                next: data => {
+                    console.log("fffee");
+                },
+                error: error => {
+                    console.error('There was an error!', error);
+                }
+            })
     }
 }
