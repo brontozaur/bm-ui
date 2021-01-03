@@ -29,7 +29,10 @@
                 <label class="margin20Right">{{i+1}}.</label>
                 <img [src]="defaultImage" *ngIf="!book.image" class="margin20Right image-book">
                 <img [src]="book.image" *ngIf="book.image" class="margin20Right image-book">
-                <label>{{book.title}}</label>
+                <i style="cursor:pointer" class="fas fa-pencil-alt load-icon-action"
+                   (click)="toggleEditState(titleEdit, titleLabel)"></i>
+                <label #titleLabel>{{book.title}}</label>
+                <input type="hidden" #titleEdit class="centerInput" [(ngModel)]="book.title"/>
             </div>
             <div [hidden]="book.epubFile" class="col-xs-3 full-height error">
                 <div class="center" (click)="fileEpubInput.click()">

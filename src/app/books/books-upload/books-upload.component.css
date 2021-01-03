@@ -48,3 +48,9 @@
 .align-right {
     float: right;
 }
+
+.centerInput {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}

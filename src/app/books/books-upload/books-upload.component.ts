@@ -91,7 +91,14 @@ export class BooksUploadComponent implements OnInit {
                 book = new BookUpload(bookName, null, !isBook ? file : null, isBook ? file : null);
                 this.bookMap.set(bookName, book);
                 this.books.push(book);
+            } else {
+                if (!isBook) {
+                    book.imageFile = file;
+                } else {
+                    book.epubFile = file;
+                }
             }
+
             if (!isBook) {
                 book.image = reader.result;
             }
@@ -106,9 +113,16 @@ export class BooksUploadComponent implements OnInit {
         }
 
         for (const i in event.target.files) {
+            if(i == 'item' || i == 'length') {
+                continue;
+            }
             var file = event.target.files[i];
             if (file && file.name) {
-                this.addFile(file, file.name);
+                let fileName = file.name;
+                if(fileName.includes('.')) {
+                    fileName = file.name.split('.')[0];
+                }
+                this.addFile(file, fileName);
             }
         }
     }
@@ -132,5 +146,15 @@ export class BooksUploadComponent implements OnInit {
             }
         });
         return valid;
+    }
+
+    toggleEditState(field, label) {
+        if(field.type == 'text') {
+            field.type = 'hidden';
+            label.hidden = false;
+        } else {
+            field.type = 'text';
+            label.hidden = true;
+        }
     }
 }

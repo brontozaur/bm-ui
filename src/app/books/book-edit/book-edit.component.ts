@@ -29,6 +29,9 @@ export class BookEditComponent implements OnInit {
             this.book = data.book;
             this.authors = data.authors;
             this.imageFile = this.book.image;
+            if(this.book.authors.length == 0) {
+                this.book.authors.push(new Author());
+            }
         });
 
     }
