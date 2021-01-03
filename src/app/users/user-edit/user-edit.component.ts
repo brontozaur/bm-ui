@@ -29,7 +29,7 @@ export class UserEditComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
-        this.service.saveUser(this.user, this.goBack());
+        this.service.saveUser(this.user);
     }
 
     goBack() {

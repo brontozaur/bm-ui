@@ -2,21 +2,23 @@ import {Book} from './book.model';
 import {HttpClient} from "@angular/common/http";
 import {UserBook} from "../users/user-book.model";
 import {NotificationService} from "../notification.service";
+import {Router} from "@angular/router";
 
 export class BooksService {
 
     constructor(private http: HttpClient,
-                private notification: NotificationService) {
+                private notification: NotificationService,
+                private router: Router) {
     }
 
     getBook(id: number) {
         return this.http.get<Book>('http://localhost:8080/api/v1/books/' + id);
     }
 
-    saveBook(book: Book, callbackFcn) {
+    saveBook(book: Book) {
         this.http.post<UserBook>('http://localhost:8080/api/v1/books', book).subscribe({
             next: data => {
-                callbackFcn();
+                this.router.navigate(['books']);
             },
             error: error => {
                 this.notification.showErrorNotification("There was an error!");
@@ -60,7 +62,9 @@ export class BooksService {
         this.http.post<any>('http://localhost:8080/api/v1/books/upload-books', formData)
             .subscribe({
                 next: data => {
+                    this.notification.showOKNotification("Books uploaded!");
                     console.log("Uploaded books");
+                    this.router.navigate(['books']);
                 },
                 error: error => {
                     this.notification.showErrorNotification("There was an error!");

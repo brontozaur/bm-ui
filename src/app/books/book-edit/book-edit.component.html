@@ -91,6 +91,17 @@
                         <br>
                     </div>
                 </div>
+
+                <label for="epub">E-Book name</label>
+                <input
+                        type="text"
+                        id="epub"
+                        class="form-control"
+                        [(ngModel)]="book.epub"
+                        name="epub"
+                        disabled
+                />
+                <br>
                 <div>
                     <label for="description">Description</label>
                     <textarea class="form-control" id="description" rows="3" name="description"

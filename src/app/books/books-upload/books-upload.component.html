@@ -34,10 +34,16 @@
                 <label #titleLabel>{{book.title}}</label>
                 <input type="hidden" #titleEdit class="centerInput" [(ngModel)]="book.title"/>
             </div>
-            <div [hidden]="book.epubFile" class="col-xs-3 full-height error">
+            <div class="col-xs-3 full-height" [ngClass]="(!book.epubFile)?'error':''">
                 <div class="center" (click)="fileEpubInput.click()">
-                    <label class="align-right" style="cursor:pointer">Load book(epub)</label>
-                    <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
+                    <label [hidden]="!book.epubFile" class="align-right" style="cursor:pointer">
+                        <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
+                        {{book.epubFile != null ? book.epubFile.name : ''}}
+                    </label>
+                    <label [hidden]="book.epubFile" class="align-right" style="cursor:pointer">
+                        <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
+                        Load book
+                    </label>
                     <input
                             style="display: none"
                             type="file" (change)="selectEpub(book, $event)"

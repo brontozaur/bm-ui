@@ -56,6 +56,7 @@ export class BooksUploadComponent implements OnInit {
 
     deleteBook(bookSelected: BookUpload) {
         this.books = this.books.filter(obj => obj !== bookSelected);
+        this.bookMap.delete(bookSelected.title);
     }
 
     selectEpub(bookSelected: BookUpload, event) {
@@ -69,15 +70,16 @@ export class BooksUploadComponent implements OnInit {
         if (file && file.name) {
             let extension = file.name.split('.');
             if (extension.length > 0) {
-                isBook = extension[1] === 'epub';
+                isBook = (extension[1] === 'epub' || extension[1] === 'pdf');
             }
         }
 
         if (!isBook && (mimeType && mimeType.match(/image\/*/) == null)) {
-            this.msg = 'Only images or epub are supported';
+            this.msg = 'Only images or epub or pdf are supported';
             this.notification.showErrorNotification(this.msg);
             return;
         }
+
         var reader = new FileReader();
         if (isBook) {
             reader.readAsArrayBuffer(file);

@@ -29,7 +29,7 @@ export class AuthorEditComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
-        this.service.saveAuthor(this.author, this.goBack());
+        this.service.saveAuthor(this.author);
     }
 
     goBack() {

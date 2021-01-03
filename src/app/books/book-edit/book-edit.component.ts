@@ -41,7 +41,7 @@ export class BookEditComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
-        this.service.saveBook(this.book, this.goBack());
+        this.service.saveBook(this.book);
     }
 
     goBack() {
