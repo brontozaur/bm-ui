@@ -38,6 +38,12 @@ export class BookEditComponent implements OnInit {
 
     saveBook(bookEditForm) {
         if (bookEditForm.form.status !== 'VALID') {
+            for(var index in this.book.authors) {
+                if (this.book.authors[index] == undefined || this.book.authors[index].id == undefined) {
+                    this.notification.showErrorNotification("Please select a valid author");
+                    return;
+                }
+            }
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
