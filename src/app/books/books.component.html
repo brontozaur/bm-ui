@@ -10,13 +10,19 @@
                    placeholder="by title or ISBN">
         </div>
         <div class="col-xs-1">
-            <button class="btn btn-primary" (click)="onSearch()">Search</button>
+            <button class="btn btn-primary" (click)="onSearch()">
+                <i class="fas fa-search"></i>
+                 Search
+            </button>
         </div>
         <div class="col-xs-6">
             <div class="pull-right">
-                <button class="btn btn-success margin10Right" (click)="upload()">Upload</button>
-                <button class="btn btn-success margin10Right" (click)="encryptionDRM()">DRM Encryption</button>
-                <button class="btn btn-success margin10Right" (click)="publish()">Publish</button>
+                <button class="btn btn-success margin10Right" (click)="upload()">
+                    <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
+                     Upload</button>
+                <button class="btn btn-success margin10Right" (click)="encryptionDRM()">
+                    <i class="fas fa-key fa-1x"></i>
+                     DRM Encryption</button>
             </div>
         </div>
     </div>

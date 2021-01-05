@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BooksService} from './books.service';
 import {Author} from '../authors/author.model';
 import {Book} from "./book.model";
+import {NotificationService} from "../notification.service";
 
 @Component({
     selector: 'app-books',
@@ -21,7 +22,8 @@ export class BooksComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private loggingService: LoggingService,
-                private booksServer: BooksService
+                private booksServer: BooksService,
+                private notification: NotificationService
     ) {
     }
 
@@ -29,10 +31,6 @@ export class BooksComponent implements OnInit {
 
         var editIcon = function (cell, formatterParams, onRendered) {
             return '<i class=\'fas fa-pencil-alt\'></i>';
-        };
-
-        var goToFcn = function (id) {
-            this.router.navigate(['edit-books/' + id]);
         };
 
         var statusFormatter = function (cell, formatterParams, onRendered) {
@@ -94,7 +92,14 @@ export class BooksComponent implements OnInit {
                 {title: 'ISBN', field: 'isbn'},
                 {title: 'Status', field: 'status', formatter: statusFormatter, width: 100, align: 'center', headerSort: false},
                 {title: 'Updated at', field: 'updatedAt'},
-                {title: 'Updated by', field: 'updatedBy'}
+                {title: 'Updated by', field: 'updatedBy'},
+                {title: 'Download', width: 100, align: 'center', headerSort: false,
+                    formatter: function (cell, formatterParams, onRendered) {
+                        if(cell.getRow()._row.data.status == 'GREEN') {
+                            return '<i class="fas fa-download"></i>';
+                        }
+                    }
+                }
             ],
             rowDblClick: (e, row) => {
                 this.router.navigate([`/edit-books/${row.getData().id}`]);
@@ -105,6 +110,10 @@ export class BooksComponent implements OnInit {
                 } else if(cell.getColumn().getDefinition().title == "Delete"){
                     this.booksServer.deleteBook(cell.getData().id);
                     cell.getRow().delete();
+                } else if(cell.getColumn().getDefinition().title == "Download"){
+                    if(cell.getData().status == 'GREEN') {
+                        this.booksServer.downloadEncryptedBook(cell.getData().id);
+                    }
                 } else {
                     cell.getRow().toggleSelect();
                 }
@@ -118,11 +127,13 @@ export class BooksComponent implements OnInit {
     }
 
     encryptionDRM() {
-        alert("encryptionDRM file");
-    }
-
-    publish() {
-        alert("publish");
+        var selectedRows = this.table.getSelectedRows();
+        if(selectedRows.length == 0) {
+            this.notification.showErrorNotification("Please select rows that will be encrypted!");
+            return;
+        }
+        //TODO
+        this.booksServer.encryptBooks(selectedRows, this.table.setData);
     }
 
     onSearch() {

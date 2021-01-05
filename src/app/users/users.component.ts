@@ -67,7 +67,6 @@ export class UsersComponent implements OnInit, OnDestroy {
                 {title: 'Last name', field: 'lastName'},
                 {title: 'Role', field: 'role'},
                 {title: 'Username', field: 'username'},
-                {title: 'Password', field: 'password'},
                 {title: 'Email', field: 'email'},
                 {title: 'Delete', formatter: 'buttonCross', align: 'center', width: 100, headerSort: false},
             ],

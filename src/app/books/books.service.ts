@@ -72,4 +72,33 @@ export class BooksService {
                 }
             })
     }
+
+    encryptBooks(booksList, reload) {
+        var books = [];
+        for(var index in booksList) {
+            var book = booksList[index]._row.data;
+            books.push(book);
+        }
+        this.http.post<any>('http://localhost:8080/api/v1/books/encrypt', books).subscribe({
+            next: data => {
+                reload();
+            },
+            error: error => {
+                this.notification.showErrorNotification("There was an error!");
+                console.error('There was an error!', error);
+            }
+        })
+    }
+
+    downloadEncryptedBook(id) {
+        this.http.get('http://localhost:8080/api/v1/books/download/'+ id ,{responseType: 'arraybuffer'}
+        ).subscribe(response => {
+            let blob = new Blob([response], { type: 'application/epub'});
+            let url = window.URL.createObjectURL(blob);
+            let pwa = window.open(url);
+            if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
+                this.notification.showErrorNotification( 'Please disable your Pop-up blocker and try again.');
+            }
+        });
+    }
 }
