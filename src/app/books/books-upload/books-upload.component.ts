@@ -143,7 +143,8 @@ export class BooksUploadComponent implements OnInit {
         if (this.bookMap.size == 0)
             valid = false;
         Array.from(this.bookMap.values()).forEach(value => {
-            if (typeof value.epubFile === 'undefined' || value.epubFile == null) {
+            if (typeof value.epubFile === 'undefined' || value.epubFile == null
+                || typeof value.imageFile === 'undefined' || value.imageFile == null) {
                 valid = false;
             }
         });

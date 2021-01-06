@@ -50,7 +50,7 @@
                                 id="year" maxlength="4"
                                 class="form-control"
                                 [(ngModel)]="book.year"
-                                name="year" disabled
+                                name="year"
                         />
                     </div>
                     <div class="col-xs-6 no-padding-right">
@@ -60,7 +60,7 @@
                                 id="category"
                                 class="form-control"
                                 [(ngModel)]="book.category"
-                                name="category" disabled
+                                name="category"
                         />
                     </div>
                 </div>
@@ -75,7 +75,6 @@
                                 class="form-control"
                                 [(ngModel)]="book.language"
                                 name="language"
-                                disabled
                         />
                     </div>
                     <div class="col-xs-6 no-padding-right">
@@ -86,7 +85,7 @@
                                 id="format"
                                 class="form-control"
                                 [(ngModel)]="book.format"
-                                name="format" disabled
+                                name="format"
                         />
                         <br>
                     </div>
@@ -126,6 +125,16 @@
                         class="form-control"
                         [(ngModel)]="book.epub"
                         name="epub"
+                        disabled
+                />
+                <br>
+                <label for="encrypted">Encrypted book name</label>
+                <input
+                        type="text"
+                        id="encrypted"
+                        class="form-control"
+                        [(ngModel)]="book.encrypted"
+                        name="encrypted"
                         disabled
                 />
                 <br>

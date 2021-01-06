@@ -133,7 +133,7 @@ export class BooksComponent implements OnInit {
             return;
         }
         //TODO
-        this.booksServer.encryptBooks(selectedRows, this.table.setData);
+        this.booksServer.encryptBooks(selectedRows, this.table);
     }
 
     onSearch() {

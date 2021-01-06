@@ -73,7 +73,7 @@ export class BooksService {
             })
     }
 
-    encryptBooks(booksList, reload) {
+    encryptBooks(booksList, table) {
         var books = [];
         for(var index in booksList) {
             var book = booksList[index]._row.data;
@@ -81,7 +81,7 @@ export class BooksService {
         }
         this.http.post<any>('http://localhost:8080/api/v1/books/encrypt', books).subscribe({
             next: data => {
-                reload();
+                table.setData();
             },
             error: error => {
                 this.notification.showErrorNotification("There was an error!");
