@@ -50,18 +50,45 @@
                                 id="year" maxlength="4"
                                 class="form-control"
                                 [(ngModel)]="book.year"
-                                name="firstName"
-                                required
+                                name="year" disabled
                         />
                     </div>
                     <div class="col-xs-6 no-padding-right">
                         <label for="category">Category</label>
-                        <select name="category" id="category" class="form-control"
-                                [(ngModel)]="book.category">
-                            <option value="SF">SF</option>
-                            <option value="FANTASY">FANTASY</option>
-                            <option value="DRAMA">DRAMA</option>
-                        </select>
+                        <input
+                                type="text"
+                                id="category"
+                                class="form-control"
+                                [(ngModel)]="book.category"
+                                name="category" disabled
+                        />
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <div class="col-xs-6 no-padding-left">
+                        <br>
+                        <label for="isbn">Language</label>
+                        <input
+                                type="text"
+                                id="language"
+                                class="form-control"
+                                [(ngModel)]="book.language"
+                                name="language"
+                                disabled
+                        />
+                    </div>
+                    <div class="col-xs-6 no-padding-right">
+                        <br>
+                        <label for="format">Format</label>
+                        <input
+                                type="text"
+                                id="format"
+                                class="form-control"
+                                [(ngModel)]="book.format"
+                                name="format" disabled
+                        />
+                        <br>
                     </div>
                 </div>
                 <br>
@@ -101,6 +128,18 @@
                         name="epub"
                         disabled
                 />
+                <br>
+                <div>
+                    <label for="publisher">Publisher</label>
+                    <input
+                            type="text"
+                            id="publisher"
+                            class="form-control"
+                            [(ngModel)]="book.publisher"
+                            name="publisher"
+                            required
+                    />
+                </div>
                 <br>
                 <div>
                     <label for="description">Description</label>
