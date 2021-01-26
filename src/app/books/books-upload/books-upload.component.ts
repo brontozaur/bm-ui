@@ -13,7 +13,9 @@ import {NotificationService} from "../../notification.service";
 export class BooksUploadComponent implements OnInit {
     public books: Array<BookUpload> = [];
     defaultImage = '../../../assets/img/no-image.png';
+    metadataImage = '../../../assets/img/configuration.jpg';
     bookMap = new Map();
+    metadataMap = new Map();
     msg = '';
 
     constructor(private router: Router,
@@ -56,7 +58,11 @@ export class BooksUploadComponent implements OnInit {
 
     deleteBook(bookSelected: BookUpload) {
         this.books = this.books.filter(obj => obj !== bookSelected);
-        this.bookMap.delete(bookSelected.title);
+        if(bookSelected.isCSV) {
+            this.metadataMap.delete(bookSelected.title);
+        } else {
+            this.bookMap.delete(bookSelected.title);
+        }
     }
 
     selectEpub(bookSelected: BookUpload, event) {
@@ -64,13 +70,54 @@ export class BooksUploadComponent implements OnInit {
         this.addFile(file, bookSelected.title);
     }
 
+    processBook(bookName, file) {
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+
+        reader.onload = (_event) => {
+            var book = this.bookMap.get(bookName);
+            if (typeof book == "undefined") {
+                book = new BookUpload(bookName, null, null, file, false);
+                this.bookMap.set(bookName, book);
+                this.books.push(book);
+            } else {
+                book.epubFile = file;
+            }
+        };
+    }
+
+    processImage(bookName, file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = (_event) => {
+            var book = this.bookMap.get(bookName);
+            if (typeof book == "undefined") {
+                book = new BookUpload(bookName, null, file, null, false);
+                this.bookMap.set(bookName, book);
+                this.books.push(book);
+            } else {
+                book.imageFile = file;
+            }
+            book.image = reader.result;
+        };
+    }
+
+    processMetadata(fileName, file) {
+        var csvFile = new BookUpload(fileName, null, null, null, true);
+        this.books.push(csvFile);
+        this.metadataMap.set(fileName, file);
+    }
+
     addFile(file, bookName) {
         var mimeType = file.type;
         var isBook = false;
+        var isConfiguration = false;
         if (file && file.name) {
             let extension = file.name.split('.');
             if (extension.length > 0) {
                 isBook = (extension[1] === 'epub' || extension[1] === 'pdf');
+                isConfiguration = extension[1] === 'csv';
             }
         }
 
@@ -80,31 +127,13 @@ export class BooksUploadComponent implements OnInit {
             return;
         }
 
-        var reader = new FileReader();
-        if (isBook) {
-            reader.readAsArrayBuffer(file);
+        if(isBook) {
+            this.processBook(bookName, file);
+        } else if (isConfiguration) {
+            this.processMetadata(bookName, file);
         } else {
-            reader.readAsDataURL(file);
+            this.processImage(bookName, file);
         }
-
-        reader.onload = (_event) => {
-            var book = this.bookMap.get(bookName);
-            if (typeof book == "undefined") {
-                book = new BookUpload(bookName, null, !isBook ? file : null, isBook ? file : null);
-                this.bookMap.set(bookName, book);
-                this.books.push(book);
-            } else {
-                if (!isBook) {
-                    book.imageFile = file;
-                } else {
-                    book.epubFile = file;
-                }
-            }
-
-            if (!isBook) {
-                book.image = reader.result;
-            }
-        };
     }
 
     load(event) {
@@ -135,7 +164,7 @@ export class BooksUploadComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please check loaded files.");
             return;
         }
-        this.service.uploadBooks(this.bookMap);
+        this.service.uploadBooks(this.bookMap, this.metadataMap);
     }
 
     isFormValid() {

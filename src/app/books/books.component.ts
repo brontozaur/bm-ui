@@ -95,6 +95,11 @@ export class BooksComponent implements OnInit {
                 {title: 'Updated by', field: 'updatedBy'},
                 {title: 'Download', width: 100, align: 'center', headerSort: false,
                     formatter: function (cell, formatterParams, onRendered) {
+                        return '<i class="fas fa-download"></i>';
+                    }
+                },
+                {title: 'Dnd encrypted', width: 135, align: 'center', headerSort: false,
+                    formatter: function (cell, formatterParams, onRendered) {
                         if(cell.getRow()._row.data.status == 'GREEN') {
                             return '<i class="fas fa-download"></i>';
                         }
@@ -110,10 +115,12 @@ export class BooksComponent implements OnInit {
                 } else if(cell.getColumn().getDefinition().title == "Delete"){
                     this.booksServer.deleteBook(cell.getData().id);
                     cell.getRow().delete();
-                } else if(cell.getColumn().getDefinition().title == "Download"){
+                } else if(cell.getColumn().getDefinition().title == "Dnd encrypted"){
                     if(cell.getData().status == 'GREEN') {
                         this.booksServer.downloadEncryptedBook(cell.getData().id);
                     }
+                } else if(cell.getColumn().getDefinition().title == "Download"){
+                    this.booksServer.downloadBook(cell.getData().id);
                 } else {
                     cell.getRow().toggleSelect();
                 }
@@ -132,7 +139,6 @@ export class BooksComponent implements OnInit {
             this.notification.showErrorNotification("Please select rows that will be encrypted!");
             return;
         }
-        //TODO
         this.booksServer.encryptBooks(selectedRows, this.table);
     }
 

@@ -17,6 +17,15 @@
                     style="display: none"
                     type="file" (change)="load($event)" multiple
                     #loadBooks>
+
+            <button class="btn btn-success pull-right margin10Right" (click)="loadDirectoryBooks.click()">
+            <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
+            Load directory
+            </button>
+            <input
+                    style="display: none"
+                    type="file" (change)="load($event)" webkitdirectory directory multiple
+                    #loadDirectoryBooks>
         </div>
     </div>
 </form>
@@ -27,11 +36,12 @@
         <div *ngFor="let book of this.books; let i = index" class="book">
             <div class="col-xs-4">
                 <label class="margin20Right">{{i+1}}.</label>
-                <img [src]="defaultImage" *ngIf="!book.image" class="margin20Right image-book">
+                <img [src]="metadataImage" *ngIf="book.isCSV" class="margin20Right image-book">
+                <img [src]="defaultImage" *ngIf="!book.image && !book.isCSV" class="margin20Right image-book">
                 <img [src]="book.image" *ngIf="book.image" class="margin20Right image-book">
                 <label #titleLabel>{{book.title}}</label>
             </div>
-            <div class="col-xs-3 full-height" [ngClass]="(!book.epubFile)?'error':''">
+            <div class="col-xs-3 full-height" [ngClass]="(!book.epubFile)?'error':''" *ngIf="!book.isCSV">
                 <div class="center" (click)="fileEpubInput.click()">
                     <label [hidden]="!book.epubFile" class="align-right" style="cursor:pointer">
                         <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
@@ -56,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-3 full-height align-right">
+            <div class="col-xs-3 full-height align-right" *ngIf="!book.isCSV">
                 <div class="center" (click)="fileInput.click()">
                     <label class="align-right" style="cursor:pointer">Change image</label>
                     <i style="cursor:pointer" class="fas fa-file-upload load-icon-action"></i>
