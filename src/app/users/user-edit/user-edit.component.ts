@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserBook} from '../user-book.model';
 import {UsersService} from '../users.service';
 import {NotificationService} from "../../notification.service";
+import {Distributor} from "../../distributors/distributor.model";
+import {DistributorsService} from "../../distributors/distributors.service";
 
 @Component({
     selector: 'app-user-detail',
@@ -11,16 +13,19 @@ import {NotificationService} from "../../notification.service";
 })
 export class UserEditComponent implements OnInit {
     user: UserBook;
+    distributors: Array<Distributor>;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: UsersService,
-                private notification: NotificationService) {
+                private notification: NotificationService,
+                private distributorService: DistributorsService) {
     }
 
     ngOnInit() {
-        this.route.data.subscribe((data: { user: UserBook }) => {
+        this.route.data.subscribe((data: { user: UserBook, distributors: Distributor[] }) => {
             this.user = data.user;
+            this.distributors = data.distributors;
         });
     }
 

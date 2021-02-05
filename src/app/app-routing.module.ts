@@ -8,6 +8,7 @@ import {BookEditComponent} from './books/book-edit/book-edit.component';
 import {BookResolver} from './books/book-edit/book-edit.resolver';
 import {BooksUploadComponent} from './books/books-upload/books-upload.component';
 import {AuthorsResolver} from "./authors/authors.resolver";
+import {DistributorsResolver} from "./distributors/distributors.resolver";
 
 const appRoutes: Routes = [
     {path: '', redirectTo: '/books ', pathMatch: 'full'},
@@ -23,7 +24,8 @@ const appRoutes: Routes = [
         path: 'edit-users/:id',
         component: UserEditComponent,
         resolve: {
-            user: UserBookResolver
+            user: UserBookResolver,
+            distributors: DistributorsResolver
         }
     },
     {
