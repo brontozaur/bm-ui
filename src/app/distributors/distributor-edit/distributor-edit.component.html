@@ -1,0 +1,121 @@
+<h1>Edit Distributor</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <button class="btn btn-primary" (click)="goBack()">Back</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-success pull-right" (click)="saveDistributor(distributorEditForm)">Save Distributor</button>
+        </div>
+    </div>
+</form>
+
+<br>
+<div class="container">
+    <div class="row">
+        <form #distributorEditForm="ngForm">
+            <div class="form-group col-xs-6">
+                <label for="name">Name</label>
+                <input
+                        type="text"
+                        id="name"
+                        class="form-control"
+                        [(ngModel)]="distributor.name"
+                        name="name"
+                        required
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="distributorUrl">Distributor URL</label>
+                <input
+                        id="distributorUrl"
+                        class="form-control"
+                        [(ngModel)]="distributor.distributorUrl"
+                        name="distributorUrl"
+                        required
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="notifyUrl">Notify URL</label>
+                <input
+                        type="notifyUrl"
+                        id="notifyUrl"
+                        class="form-control"
+                        [(ngModel)]="distributor.notifyUrl"
+                        name="notifyUrl"
+                />
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="country">Country</label>
+                <input
+                        type="country"
+                        id="country"
+                        class="form-control"
+                        [(ngModel)]="distributor.country"
+                        name="country"
+                />
+            </div>
+
+            <div class="form-group col-xs-6">
+                <label for="country">Shared Secret</label>
+                <input
+                        type="sharedSecret"
+                        id="sharedSecret"
+                        class="form-control"
+                        [(ngModel)]="distributor.sharedSecret"
+                        name="sharedSecret"
+                />
+            </div>
+
+            <div class="form-group col-xs-6">
+                <label for="uid">Uid</label>
+                <input
+                        id="uid"
+                        class="form-control"
+                        [(ngModel)]="distributor.uid"
+                        name="uid"
+                />
+            </div>
+
+            <div class="form-group col-xs-4">
+                <label for="country">Max loan count</label>
+                <input
+                        type="maxLoanCount"
+                        id="maxLoanCount"
+                        class="form-control"
+                        [(ngModel)]="distributor.maxLoanCount"
+                        name="maxLoanCount"
+                />
+            </div>
+
+            <div class="form-group col-xs-4">
+                <label for="country">Link Expiration</label>
+                <input
+                        type="linkExpiration"
+                        id="linkExpiration"
+                        class="form-control"
+                        [(ngModel)]="distributor.linkExpiration"
+                        name="linkExpiration"
+                />
+            </div>
+
+            <div class="form-group col-xs-4">
+                <label for="id">Id</label>
+                <input
+                        id="id"
+                        class="form-control"
+                        [(ngModel)]="distributor.id"
+                        name="id"
+                        disabled
+                />
+            </div>
+
+            <div class="form-group col-xs-12">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" rows="3" name="description"
+                          [(ngModel)]="distributor.description"></textarea>
+            </div>
+        </form>
+    </div>
+</div>

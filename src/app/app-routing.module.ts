@@ -9,6 +9,8 @@ import {BookResolver} from './books/book-edit/book-edit.resolver';
 import {BooksUploadComponent} from './books/books-upload/books-upload.component';
 import {AuthorsResolver} from "./authors/authors.resolver";
 import {DistributorsResolver} from "./distributors/distributors.resolver";
+import {DistributorEditComponent} from "./distributors/distributor-edit/distributor-edit.component";
+import {DistributorEditResolver} from "./distributors/distributor-edit/distributor-edit.resolver";
 
 const appRoutes: Routes = [
     {path: '', redirectTo: '/books ', pathMatch: 'full'},
@@ -54,7 +56,18 @@ const appRoutes: Routes = [
     {
         path: 'upload-books',
         component: BooksUploadComponent
-    }
+    },
+    {
+        path: 'distributors',
+        loadChildren: './distributors/distributors.module#DistributorsModule'
+    },
+    {
+        path: 'edit-distributors/:id',
+        component: DistributorEditComponent,
+        resolve: {
+            distributor: DistributorEditResolver
+        }
+    },
 ];
 
 @NgModule({

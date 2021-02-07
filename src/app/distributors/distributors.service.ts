@@ -35,4 +35,17 @@ export class DistributorsService {
     getAll() {
         return this.http.get<Distributor>('http://localhost:8080/api/v1/distributors/all');
     }
+
+    reloadDistributors(table) {
+        this.http.get<Distributor>('http://localhost:8080/api/v1/distributors/reload')
+            .subscribe({
+                next: data => {
+                    table.setData();
+                },
+                error: error => {
+                    this.notification.showErrorNotification("There was an error!");
+                    console.error('There was an error!', error);
+                }
+            });
+    }
 }

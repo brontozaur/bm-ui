@@ -13,6 +13,7 @@ import {BookEditComponent} from './books/book-edit/book-edit.component';
 import {BooksUploadComponent} from './books/books-upload/books-upload.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {DistributorEditComponent} from "./distributors/distributor-edit/distributor-edit.component";
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         BookEditComponent,
         BooksUploadComponent,
         AuthorEditComponent,
-        HeaderComponent],
+        HeaderComponent,
+        DistributorEditComponent],
     imports: [
         BrowserModule,
         HttpClientModule,

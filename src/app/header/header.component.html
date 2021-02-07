@@ -27,6 +27,12 @@
                         Books
                     </a>
                 </li>
+                <li routerLinkActive="active" *ngIf="isAuthenticated">
+                    <a routerLink="/distributors">
+                        <i class="fas fa-network-wired"></i>
+                        Distributors
+                    </a>
+                </li>
                 <li routerLinkActive="active" *ngIf="!isAuthenticated">
                     <a routerLink="/auth">Authenticate</a>
                 </li>

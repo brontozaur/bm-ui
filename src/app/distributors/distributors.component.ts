@@ -1,28 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LoggingService} from '../logging.service';
 import Tabulator from 'tabulator-tables';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AuthorsService} from './authors.service';
-import {Author} from "./author.model";
+import {DistributorsService} from './distributors.service';
+import {Distributor} from "./distributor.model";
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './authors.component.html',
-    styleUrls: ['./authors.component.css',
+    selector: 'app-distributors',
+    templateUrl: './distributors.component.html',
+    styleUrls: ['./distributors.component.css',
         '../app.component.css']
 })
-export class AuthorsComponent implements OnInit {
+export class DistributorsComponent implements OnInit, OnDestroy {
 
-    private authors: Author[] = [];
+    private distributors: Distributor[] = [];
     private table;
     searchTerm: string = "";
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private loggingService: LoggingService,
-                private authorsServer: AuthorsService
-    ) {
-    }
+                private distributorsServer: DistributorsService
+    ){}
 
     ngOnInit() {
         var editIcon = function (cell, formatterParams, onRendered) {
@@ -30,11 +29,11 @@ export class AuthorsComponent implements OnInit {
         };
 
         var goToFcn = function (id) {
-            this.router.navigate(['edit-authors/' + id]);
+            this.router.navigate(['edit-distributors/' + id]);
         };
 
-        this.table = new Tabulator('#authors-table', {
-            data: this.authors,
+        this.table = new Tabulator('#distributors-table', {
+            data: this.distributors,
             height: 'calc(100vh - 250px)',
             layout: 'fitColumns',
             addRowPos: 'top',
@@ -51,7 +50,7 @@ export class AuthorsComponent implements OnInit {
                 "data": "content"
             },
             paginationSizeSelector: [5, 10, 15, 20, 50, 100, 500, 1000],
-            ajaxURL: "http://localhost:8080/api/v1/authors/filter",
+            ajaxURL: "http://localhost:8080/api/v1/distributors/filter",
             ajaxURLGenerator: (url, config, params) => {
                 params.searchTerm = this.searchTerm;
                 return url + "?params=" + encodeURI(JSON.stringify(params));
@@ -63,18 +62,23 @@ export class AuthorsComponent implements OnInit {
             columns: [
                 {title: 'Edit', formatter: editIcon, width: 60, align: 'center', headerSort: false},
                 {title: 'Id', field: 'id', width: 60},
-                {title: 'First name', field: 'firstName'},
-                {title: 'Last name', field: 'lastName'},
+                {title: 'Uid', field: 'uid'},
+                {title: 'Name', field: 'name'},
+                {title: 'Distributor URL', field: 'distributorUrl'},
+                {title: 'Notify URL', field: 'notifyUrl'},
+                {title: 'Country', field: 'country'},
+                {title: 'Description', field: 'description'},
+                {title: 'Max loan count', field: 'maxLoanCount'},
                 {title: 'Delete', formatter: 'buttonCross', align: 'center', width: 100, headerSort: false},
             ],
             rowDblClick: (e, row) => {
-                this.router.navigate([`/edit-authors/${row.getData().id}`]);
+                this.router.navigate([`/edit-distributors/${row.getData().id}`]);
             },
             cellClick: (e, cell) => {
                 if (cell.getColumn().getDefinition().title == "Edit") {
-                    this.router.navigate([`/edit-authors/${cell.getData().id}`]);
+                    this.router.navigate([`/edit-distributors/${cell.getData().id}`]);
                 } else if(cell.getColumn().getDefinition().title == "Delete"){
-                    this.authorsServer.deleteAuthor(cell.getData().id);
+                    this.distributorsServer.deleteDistributor(cell.getData().id);
                     cell.getRow().delete();
                 }
             }
@@ -82,12 +86,12 @@ export class AuthorsComponent implements OnInit {
         this.table.setData();
     }
 
-    onNewAuthor() {
-        this.router.navigate(['edit-authors/0']);
+    onNewDistributor() {
+        this.router.navigate(['edit-distributors/0']);
+    }
+    reloadDistributors() {
+        this.distributorsServer.reloadDistributors(this.table);
     }
 
-    onSearch() {
-        this.table.setData();
-    }
-
+    ngOnDestroy() {}
 }

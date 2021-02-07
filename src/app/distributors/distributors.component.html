@@ -1,0 +1,30 @@
+<h1>Distributors</h1>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-1">
+            <label for="search" class="control-label">Search</label>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}"
+                id="search" placeholder="by name or uid">
+        </div>
+        <div class="col-xs-1">
+            <button class="btn btn-primary" (click)="onSearch()">
+                <i class="fas fa-search"></i>  Search</button>
+        </div>
+        <div class="col-xs-6">
+            <div class="pull-right">
+                 <button class="btn btn-primary margin20Right" (click)="reloadDistributors()">
+                     <i class="fas fa-sync"></i> Reload Distributors</button>
+
+                 <button class="btn btn-success" (click)="onNewDistributor()">
+                      <i class="fas fa-plus"></i> New Distributor</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<br>
+
+<div style="background-color: #ffffff" id="distributors-table"></div>
