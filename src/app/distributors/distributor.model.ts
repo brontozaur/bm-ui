@@ -10,8 +10,6 @@ export class Distributor {
     public sharedSecret: string;
     public linkExpiration: string;
 
-    constructor(){}
-
     constructor(id: number,
                 uid: number,
                 name: string,
