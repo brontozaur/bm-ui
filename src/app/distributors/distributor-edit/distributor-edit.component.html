@@ -65,6 +65,7 @@
                         class="form-control"
                         [(ngModel)]="distributor.sharedSecret"
                         name="sharedSecret"
+                        [disabled]="distributor.id"
                 />
             </div>
 
@@ -75,6 +76,7 @@
                         class="form-control"
                         [(ngModel)]="distributor.uid"
                         name="uid"
+                        disabled
                 />
             </div>
 
@@ -86,6 +88,7 @@
                         class="form-control"
                         [(ngModel)]="distributor.maxLoanCount"
                         name="maxLoanCount"
+                        required
                 />
             </div>
 
