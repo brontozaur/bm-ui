@@ -117,10 +117,10 @@ export class BooksComponent implements OnInit {
                     cell.getRow().delete();
                 } else if(cell.getColumn().getDefinition().title == "Dnd encrypted"){
                     if(cell.getData().status == 'GREEN') {
-                        this.booksServer.downloadEncryptedBook(cell.getData().id);
+                        this.booksServer.downloadEncryptedBook(cell.getData());
                     }
                 } else if(cell.getColumn().getDefinition().title == "Download"){
-                    this.booksServer.downloadBook(cell.getData().id);
+                    this.booksServer.downloadBook(cell.getData());
                 } else {
                     cell.getRow().toggleSelect();
                 }

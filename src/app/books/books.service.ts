@@ -94,27 +94,33 @@ export class BooksService {
         })
     }
 
-    downloadEncryptedBook(id) {
-        this.http.get('http://localhost:8080/api/v1/books/download/'+ id ,{responseType: 'arraybuffer'}
+    downloadEncryptedBook(bookRow) {
+        this.http.get('http://localhost:8080/api/v1/books/download/'+ bookRow.id ,{responseType: 'arraybuffer'}
         ).subscribe(response => {
-            let blob = new Blob([response], { type: 'application/epub'});
-            let url = window.URL.createObjectURL(blob);
-            let pwa = window.open(url);
-            if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
-                this.notification.showErrorNotification( 'Please disable your Pop-up blocker and try again.');
-            }
+            var downloadLink = document.createElement("a");
+            var blob = new Blob([response], { type: 'application/epub'});
+            var url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.download = "encrypted_"+ bookRow.epub;
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         });
     }
 
-    downloadBook(id) {
-        this.http.get('http://localhost:8080/api/v1/books/download-original/'+ id ,{responseType: 'arraybuffer'}
+    downloadBook(bookRow) {
+        this.http.get('http://localhost:8080/api/v1/books/download-original/'+ bookRow.id ,{responseType: 'arraybuffer'}
         ).subscribe(response => {
-            let blob = new Blob([response], { type: 'application/epub'});
-            let url = window.URL.createObjectURL(blob);
-            let pwa = window.open(url);
-            if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
-                this.notification.showErrorNotification( 'Please disable your Pop-up blocker and try again.');
-            }
+            var downloadLink = document.createElement("a");
+            var blob = new Blob([response], { type: 'application/epub'});
+            var url = URL.createObjectURL(blob);
+            downloadLink.href = url;
+            downloadLink.download = bookRow.epub;
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         });
     }
 }

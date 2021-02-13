@@ -19,8 +19,11 @@ export class DistributorsService {
                 this.router.navigate(['distributors']);
             },
             error: error => {
-                this.notification.showErrorNotification("There was an error!");
-                console.error('There was an error!');
+                if(error.error && error.error.message) {
+                    this.notification.showErrorNotification(error.error.message);
+                } else {
+                    this.notification.showErrorNotification("There was an error!");
+                }
             }
         })
     }
