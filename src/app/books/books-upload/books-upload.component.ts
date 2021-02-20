@@ -121,7 +121,7 @@ export class BooksUploadComponent implements OnInit {
             }
         }
 
-        if (!isBook && (mimeType && mimeType.match(/image\/*/) == null)) {
+        if (!isBook && !isConfiguration && (mimeType && mimeType.match(/image\/*/) == null)) {
             this.msg = 'Only images or epub or pdf are supported';
             this.notification.showErrorNotification(this.msg);
             return;
