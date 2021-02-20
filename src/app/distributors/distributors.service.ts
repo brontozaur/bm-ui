@@ -8,7 +8,8 @@ export class DistributorsService {
 
     constructor(private http: HttpClient,
                 private notification: NotificationService,
-                private router: Router) {}
+                private router: Router) {
+    }
 
     getDistributor(id: number) {
         return this.http.get<Distributor>(`${environment.apiUrl}/api/v1/distributors/` + id)
@@ -20,7 +21,7 @@ export class DistributorsService {
                 this.router.navigate(['distributors']);
             },
             error: error => {
-                if(error) {
+                if (error) {
                     this.notification.showErrorNotification(error);
                 } else {
                     this.notification.showErrorNotification("There was an error!");
@@ -33,7 +34,8 @@ export class DistributorsService {
         return this.http.delete(`${environment.apiUrl}/api/v1/distributors/` + id)
             .subscribe(() => {
                 this.notification.showOKNotification("Deleted successfully!");
-                console.log('Delete successful');});
+                console.log('Delete successful');
+            });
     }
 
     getAll() {

@@ -34,14 +34,14 @@ export class BooksService {
 
         this.http.post<any>(`${environment.apiUrl}/api/v1/books/upload`, formData,
             {responseType: 'text' as 'json'}).subscribe({
-             next: data => {
-                 book.image = data;
-             },
-             error: error => {
-                 this.notification.showErrorNotification("There was an error!");
-                 console.error('There was an error!', error);
-             }
-         })
+            next: data => {
+                book.image = data;
+            },
+            error: error => {
+                this.notification.showErrorNotification("There was an error!");
+                console.error('There was an error!', error);
+            }
+        })
     }
 
     deleteBook(id: number) {
@@ -80,7 +80,7 @@ export class BooksService {
 
     encryptBooks(booksList, table) {
         var books = [];
-        for(var index in booksList) {
+        for (var index in booksList) {
             var book = booksList[index]._row.data;
             books.push(book);
         }
@@ -96,13 +96,13 @@ export class BooksService {
     }
 
     downloadEncryptedBook(bookRow) {
-        this.http.get(`${environment.apiUrl}/api/v1/books/download/`+ bookRow.id ,{responseType: 'arraybuffer'}
+        this.http.get(`${environment.apiUrl}/api/v1/books/download/` + bookRow.id, {responseType: 'arraybuffer'}
         ).subscribe(response => {
             var downloadLink = document.createElement("a");
-            var blob = new Blob([response], { type: 'application/epub'});
+            var blob = new Blob([response], {type: 'application/epub'});
             var url = URL.createObjectURL(blob);
             downloadLink.href = url;
-            downloadLink.download = "encrypted_"+ bookRow.epub;
+            downloadLink.download = "encrypted_" + bookRow.epub;
 
             document.body.appendChild(downloadLink);
             downloadLink.click();
@@ -111,10 +111,10 @@ export class BooksService {
     }
 
     downloadBook(bookRow) {
-        this.http.get(`${environment.apiUrl}/api/v1/books/download-original/`+ bookRow.id ,{responseType: 'arraybuffer'}
+        this.http.get(`${environment.apiUrl}/api/v1/books/download-original/` + bookRow.id, {responseType: 'arraybuffer'}
         ).subscribe(response => {
             var downloadLink = document.createElement("a");
-            var blob = new Blob([response], { type: 'application/epub'});
+            var blob = new Blob([response], {type: 'application/epub'});
             var url = URL.createObjectURL(blob);
             downloadLink.href = url;
             downloadLink.download = bookRow.epub;

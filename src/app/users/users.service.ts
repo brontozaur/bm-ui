@@ -8,7 +8,8 @@ export class UsersService {
 
     constructor(private http: HttpClient,
                 private notification: NotificationService,
-                private router: Router) {}
+                private router: Router) {
+    }
 
     getUser(id: number) {
         return this.http.get<UserBook>(`${environment.apiUrl}/api/v1/users/` + id)
@@ -30,6 +31,7 @@ export class UsersService {
         return this.http.delete(`${environment.apiUrl}/api/v1/users/` + id)
             .subscribe(() => {
                 this.notification.showOKNotification("Deleted successfully!");
-                console.log('Delete successful');});
+                console.log('Delete successful');
+            });
     }
 }

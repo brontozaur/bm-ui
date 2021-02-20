@@ -7,15 +7,17 @@
         </div>
         <div class="col-sm-4">
             <input type="text" class="form-control" [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}"
-                id="search" placeholder="by firstname or lastname">
+                   id="search" placeholder="by firstname or lastname">
         </div>
         <div class="col-xs-1">
             <button class="btn btn-primary" (click)="onSearch()">
-                <i class="fas fa-search"></i>  Search</button>
+                <i class="fas fa-search"></i> Search
+            </button>
         </div>
         <div class="col-xs-6">
             <button class="btn btn-success pull-right" (click)="onNewUser()">
-                <i class="fas fa-plus"></i> New User</button>
+                <i class="fas fa-plus"></i> New User
+            </button>
         </div>
     </div>
 </form>

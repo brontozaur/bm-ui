@@ -58,7 +58,7 @@ export class BooksUploadComponent implements OnInit {
 
     deleteBook(bookSelected: BookUpload) {
         this.books = this.books.filter(obj => obj !== bookSelected);
-        if(bookSelected.isCSV) {
+        if (bookSelected.isCSV) {
             this.metadataMap.delete(bookSelected.title);
         } else {
             this.bookMap.delete(bookSelected.title);
@@ -127,7 +127,7 @@ export class BooksUploadComponent implements OnInit {
             return;
         }
 
-        if(isBook) {
+        if (isBook) {
             this.processBook(bookName, file);
         } else if (isConfiguration) {
             this.processMetadata(bookName, file);
@@ -144,13 +144,13 @@ export class BooksUploadComponent implements OnInit {
         }
 
         for (const i in event.target.files) {
-            if(i == 'item' || i == 'length') {
+            if (i == 'item' || i == 'length') {
                 continue;
             }
             var file = event.target.files[i];
             if (file && file.name) {
                 let fileName = file.name;
-                if(fileName.includes('.')) {
+                if (fileName.includes('.')) {
                     fileName = file.name.split('.')[0];
                 }
                 this.addFile(file, fileName);
@@ -181,7 +181,7 @@ export class BooksUploadComponent implements OnInit {
     }
 
     toggleEditState(field, label) {
-        if(field.type == 'text') {
+        if (field.type == 'text') {
             field.type = 'hidden';
             label.hidden = false;
         } else {

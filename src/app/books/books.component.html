@@ -6,23 +6,26 @@
             <label for="search" class="control-label">Search</label>
         </div>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="search" [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}"
+            <input type="text" class="form-control" id="search" [(ngModel)]="searchTerm"
+                   [ngModelOptions]="{standalone: true}"
                    placeholder="by title or ISBN">
         </div>
         <div class="col-xs-1">
             <button class="btn btn-primary" (click)="onSearch()">
                 <i class="fas fa-search"></i>
-                 Search
+                Search
             </button>
         </div>
         <div class="col-xs-6">
             <div class="pull-right">
                 <button class="btn btn-success margin10Right" (click)="upload()">
                     <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
-                     Upload</button>
+                    Upload
+                </button>
                 <button class="btn btn-success margin10Right" (click)="encryptionDRM()">
                     <i class="fas fa-key fa-1x"></i>
-                     DRM Encryption</button>
+                    DRM Encryption
+                </button>
             </div>
         </div>
     </div>

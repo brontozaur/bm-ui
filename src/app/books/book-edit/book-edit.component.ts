@@ -29,7 +29,7 @@ export class BookEditComponent implements OnInit {
             this.book = data.book;
             this.authors = data.authors;
             this.imageFile = this.book.image;
-            if(this.book.authors.length == 0) {
+            if (this.book.authors.length == 0) {
                 this.book.authors.push(new Author());
             }
         });
@@ -38,7 +38,7 @@ export class BookEditComponent implements OnInit {
 
     saveBook(bookEditForm) {
         if (bookEditForm.form.status !== 'VALID') {
-            for(var index in this.book.authors) {
+            for (var index in this.book.authors) {
                 if (this.book.authors[index] == undefined || this.book.authors[index].id == undefined) {
                     this.notification.showErrorNotification("Please select a valid author");
                     return;
@@ -90,14 +90,14 @@ export class BookEditComponent implements OnInit {
     }
 
     getCompleteName(author) {
-        if(author && author.id) {
+        if (author && author.id) {
             return author.firstName + ' ' + author.lastName;
         }
     }
 
     saveSelectedAuthor($event, index) {
         let name = $event.target.value;
-        let selectedAuthor = this.authors.filter(x => (x.firstName +' '+x.lastName) === name)[0];
+        let selectedAuthor = this.authors.filter(x => (x.firstName + ' ' + x.lastName) === name)[0];
         this.book.authors[index] = selectedAuthor;
     }
 

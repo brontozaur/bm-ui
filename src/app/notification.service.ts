@@ -1,7 +1,7 @@
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {Injectable} from "@angular/core";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class NotificationService {
 
     horizontalPosition: MatSnackBarHorizontalPosition = 'right';

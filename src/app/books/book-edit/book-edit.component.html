@@ -1,4 +1,4 @@
-<h1>Edit Book</h1>
+<h1>Edit book</h1>
 <br>
 <form class="form-horizontal">
     <div class="form-group">
@@ -29,9 +29,12 @@
                 <div *ngFor="let author of book.authors; let i = index">
                     <br>
                     <div class="col-xs-11 no-padding-left">
-                        <input type="text" name="author" class="form-control" list="authors" value="{{getCompleteName(author)}}" (change)="saveSelectedAuthor($event, i)">
+                        <input type="text" name="author" class="form-control" list="authors"
+                               value="{{getCompleteName(author)}}" (change)="saveSelectedAuthor($event, i)">
                         <datalist id="authors">
-                            <option *ngFor="let authorOption of authors" [value]="getCompleteName(authorOption)" >{{getCompleteName(authorOption)}}</option>
+                            <option *ngFor="let authorOption of authors" [value]="getCompleteName(authorOption)">
+                                {{getCompleteName(authorOption)}}
+                            </option>
                         </datalist>
                         <br>
                     </div>
