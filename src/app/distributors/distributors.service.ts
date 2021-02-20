@@ -49,7 +49,7 @@ export class DistributorsService {
                     table.setData();
                 },
                 error: error => {
-                    this.notification.showErrorNotification("There was an error!");
+                    this.notification.showErrorNotification(error);
                     console.error('There was an error!', error);
                 }
             });

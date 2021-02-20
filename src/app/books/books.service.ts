@@ -22,7 +22,7 @@ export class BooksService {
                 this.router.navigate(['books']);
             },
             error: error => {
-                this.notification.showErrorNotification("There was an error!");
+                this.notification.showErrorNotification(error);
                 console.error('There was an error!', error);
             }
         })
@@ -38,7 +38,7 @@ export class BooksService {
                 book.image = data;
             },
             error: error => {
-                this.notification.showErrorNotification("There was an error!");
+                this.notification.showErrorNotification(error);
                 console.error('There was an error!', error);
             }
         })
@@ -89,7 +89,7 @@ export class BooksService {
                 table.setData();
             },
             error: error => {
-                this.notification.showErrorNotification("There was an error!");
+                this.notification.showErrorNotification(error);
                 console.error('There was an error!', error);
             }
         })
