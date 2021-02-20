@@ -6,6 +6,7 @@ import {UsersService} from './users.service';
 import {UserBook} from "./user-book.model";
 import {AuthenticationService} from "../auth/authentication.service";
 import {NotificationService} from "../notification.service";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-users',
@@ -55,7 +56,7 @@ export class UsersComponent implements OnInit, OnDestroy {
                 "data": "content"
             },
             paginationSizeSelector: [5, 10, 15, 20, 50, 100, 500, 1000],
-            ajaxURL: "http://localhost:8080/api/v1/users/filter",
+            ajaxURL: `${environment.apiUrl}/api/v1/users/filter`,
             ajaxURLGenerator: (url, config, params) => {
                 params.searchTerm = this.searchTerm;
                 if (this.authenticationService.currentUserValue) {

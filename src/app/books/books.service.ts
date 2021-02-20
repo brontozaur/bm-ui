@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {UserBook} from "../users/user-book.model";
 import {NotificationService} from "../notification.service";
 import {Router} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 export class BooksService {
 
@@ -12,11 +13,11 @@ export class BooksService {
     }
 
     getBook(id: number) {
-        return this.http.get<Book>('http://localhost:8080/api/v1/books/' + id);
+        return this.http.get<Book>(`${environment.apiUrl}/api/v1/books/` + id);
     }
 
     saveBook(book: Book) {
-        this.http.post<UserBook>('http://localhost:8080/api/v1/books', book).subscribe({
+        this.http.post<UserBook>(`${environment.apiUrl}/api/v1/books`, book).subscribe({
             next: data => {
                 this.router.navigate(['books']);
             },
@@ -31,7 +32,7 @@ export class BooksService {
         const formData = new FormData();
         formData.append('file', file);
 
-        this.http.post<any>('http://localhost:8080/api/v1/books/upload', formData,
+        this.http.post<any>(`${environment.apiUrl}/api/v1/books/upload`, formData,
             {responseType: 'text' as 'json'}).subscribe({
              next: data => {
                  book.image = data;
@@ -44,7 +45,7 @@ export class BooksService {
     }
 
     deleteBook(id: number) {
-        return this.http.delete('http://localhost:8080/api/v1/books/' + id)
+        return this.http.delete(`${environment.apiUrl}/api/v1/books/` + id)
             .subscribe(() => {
                 this.notification.showOKNotification("Deleted successfully!");
                 console.log('Delete successful');
@@ -63,7 +64,7 @@ export class BooksService {
             formData.append("metadatas[]", value[1]);
         });
 
-        this.http.post<any>('http://localhost:8080/api/v1/books/upload-books', formData)
+        this.http.post<any>(`${environment.apiUrl}/api/v1/books/upload-books`, formData)
             .subscribe({
                 next: data => {
                     this.notification.showOKNotification("Books uploaded!");
@@ -83,7 +84,7 @@ export class BooksService {
             var book = booksList[index]._row.data;
             books.push(book);
         }
-        this.http.post<any>('http://localhost:8080/api/v1/books/encrypt', books).subscribe({
+        this.http.post<any>(`${environment.apiUrl}/api/v1/books/encrypt`, books).subscribe({
             next: data => {
                 table.setData();
             },
@@ -95,7 +96,7 @@ export class BooksService {
     }
 
     downloadEncryptedBook(bookRow) {
-        this.http.get('http://localhost:8080/api/v1/books/download/'+ bookRow.id ,{responseType: 'arraybuffer'}
+        this.http.get(`${environment.apiUrl}/api/v1/books/download/`+ bookRow.id ,{responseType: 'arraybuffer'}
         ).subscribe(response => {
             var downloadLink = document.createElement("a");
             var blob = new Blob([response], { type: 'application/epub'});
@@ -110,7 +111,7 @@ export class BooksService {
     }
 
     downloadBook(bookRow) {
-        this.http.get('http://localhost:8080/api/v1/books/download-original/'+ bookRow.id ,{responseType: 'arraybuffer'}
+        this.http.get(`${environment.apiUrl}/api/v1/books/download-original/`+ bookRow.id ,{responseType: 'arraybuffer'}
         ).subscribe(response => {
             var downloadLink = document.createElement("a");
             var blob = new Blob([response], { type: 'application/epub'});

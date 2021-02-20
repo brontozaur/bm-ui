@@ -6,6 +6,7 @@ import {AuthorsService} from './authors.service';
 import {Author} from "./author.model";
 import {AuthenticationService} from "../auth/authentication.service";
 import {NotificationService} from "../notification.service";
+import {environment} from "../../environments/environment";
 
 @Component({
     selector: 'app-users',
@@ -55,7 +56,7 @@ export class AuthorsComponent implements OnInit {
                 "data": "content"
             },
             paginationSizeSelector: [5, 10, 15, 20, 50, 100, 500, 1000],
-            ajaxURL: "http://localhost:8080/api/v1/authors/filter",
+            ajaxURL: `${environment.apiUrl}/api/v1/authors/filter`,
             ajaxURLGenerator: (url, config, params) => {
                 params.searchTerm = this.searchTerm;
                 if (this.authenticationService.currentUserValue) {

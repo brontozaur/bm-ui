@@ -6,7 +6,7 @@ export class Distributor {
     public notifyUrl: string;
     public country: string;
     public description: string;
-    public maxLoanCount: string;
+    public maxLoanCount: number;
     public sharedSecret: string;
     public linkExpiration: string;
 
@@ -17,7 +17,7 @@ export class Distributor {
                 notifyUrl: string,
                 country: string,
                 description: string,
-                maxLoanCount: string,
+                maxLoanCount: number,
                 sharedSecret: string,
                 linkExpiration: string) {
         this.id = id;

@@ -83,11 +83,13 @@
             <div class="form-group col-xs-4">
                 <label for="country">Max loan count</label>
                 <input
-                        type="maxLoanCount"
+                        type="number"
                         id="maxLoanCount"
                         class="form-control"
                         [(ngModel)]="distributor.maxLoanCount"
                         name="maxLoanCount"
+                        min="0"
+                        max="999"
                         required
                 />
             </div>

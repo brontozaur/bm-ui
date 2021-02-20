@@ -2,6 +2,7 @@ import {UserBook} from './user-book.model';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from "../notification.service";
 import {Router} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 export class UsersService {
 
@@ -10,11 +11,11 @@ export class UsersService {
                 private router: Router) {}
 
     getUser(id: number) {
-        return this.http.get<UserBook>('http://localhost:8080/api/v1/users/' + id)
+        return this.http.get<UserBook>(`${environment.apiUrl}/api/v1/users/` + id)
     }
 
     saveUser(user: UserBook) {
-        this.http.post<UserBook>('http://localhost:8080/api/v1/users', user).subscribe({
+        this.http.post<UserBook>(`${environment.apiUrl}/api/v1/users`, user).subscribe({
             next: data => {
                 this.router.navigate(['users']);
             },
@@ -26,7 +27,7 @@ export class UsersService {
     }
 
     deleteUser(id: number) {
-        return this.http.delete('http://localhost:8080/api/v1/users/' + id)
+        return this.http.delete(`${environment.apiUrl}/api/v1/users/` + id)
             .subscribe(() => {
                 this.notification.showOKNotification("Deleted successfully!");
                 console.log('Delete successful');});
