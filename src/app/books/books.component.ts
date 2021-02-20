@@ -77,7 +77,9 @@ export class BooksComponent implements OnInit {
                 if (xhr.status == 401) {
                     this.authenticationService.logout();
                     this.router.navigate(['/login'], {queryParams: {returnUrl: "books"}});
+                    return;
                 }
+                this.notification.showErrorNotification(xhr)
             },
             paginationSize: 20,
             initialSort: [

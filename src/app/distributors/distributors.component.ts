@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DistributorsService} from './distributors.service';
 import {Distributor} from "./distributor.model";
 import {AuthenticationService} from "../auth/authentication.service";
+import {NotificationService} from "../notification.service";
 
 @Component({
     selector: 'app-distributors',
@@ -20,6 +21,7 @@ export class DistributorsComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
+                private notification: NotificationService,
                 private loggingService: LoggingService,
                 private distributorsServer: DistributorsService,
                 private authenticationService: AuthenticationService
@@ -66,8 +68,10 @@ export class DistributorsComponent implements OnInit, OnDestroy {
             ajaxError: (xhr, textStatus, errorThrown) => {
                 if (xhr.status == 401) {
                     this.authenticationService.logout();
-                    this.router.navigate(['/login'], {queryParams: {returnUrl: "distributors"}});
+                    this.router.navigate(['/login'], {queryParams: {returnUrl: "books"}});
+                    return;
                 }
+                this.notification.showErrorNotification(xhr)
             },
             paginationSize: 20,
             initialSort: [

@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthorsService} from './authors.service';
 import {Author} from "./author.model";
 import {AuthenticationService} from "../auth/authentication.service";
+import {NotificationService} from "../notification.service";
 
 @Component({
     selector: 'app-users',
@@ -20,6 +21,7 @@ export class AuthorsComponent implements OnInit {
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
+                private notification: NotificationService,
                 private loggingService: LoggingService,
                 private authorsServer: AuthorsService,
                 private authenticationService: AuthenticationService
@@ -66,8 +68,10 @@ export class AuthorsComponent implements OnInit {
             ajaxError: (xhr, textStatus, errorThrown) => {
                 if (xhr.status == 401) {
                     this.authenticationService.logout();
-                    this.router.navigate(['/login'], {queryParams: {returnUrl: "authors"}});
+                    this.router.navigate(['/login'], {queryParams: {returnUrl: "books"}});
+                    return;
                 }
+                this.notification.showErrorNotification(xhr)
             },
             paginationSize: 20,
             initialSort: [
