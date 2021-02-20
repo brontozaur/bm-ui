@@ -11,12 +11,18 @@ import {AuthorsResolver} from "./authors/authors.resolver";
 import {DistributorsResolver} from "./distributors/distributors.resolver";
 import {DistributorEditComponent} from "./distributors/distributor-edit/distributor-edit.component";
 import {DistributorEditResolver} from "./distributors/distributor-edit/distributor-edit.resolver";
+import {LoginComponent} from "./auth/login.component";
+import {AuthGuard} from "./auth";
 
 const appRoutes: Routes = [
-    {path: '', redirectTo: '/books ', pathMatch: 'full'},
     {
-        path: 'auth',
-        loadChildren: './auth/auth.module#AuthModule'
+        path: '',
+        loadChildren: './books/books.module#BooksModule',
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     },
     {
         path: 'users',
@@ -68,6 +74,9 @@ const appRoutes: Routes = [
             distributor: DistributorEditResolver
         }
     },
+
+    // otherwise redirect to home
+    {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

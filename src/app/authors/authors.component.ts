@@ -4,6 +4,7 @@ import Tabulator from 'tabulator-tables';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthorsService} from './authors.service';
 import {Author} from "./author.model";
+import {AuthenticationService} from "../auth/authentication.service";
 
 @Component({
     selector: 'app-users',
@@ -20,7 +21,8 @@ export class AuthorsComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private loggingService: LoggingService,
-                private authorsServer: AuthorsService
+                private authorsServer: AuthorsService,
+                private authenticationService: AuthenticationService
     ) {
     }
 
@@ -54,6 +56,11 @@ export class AuthorsComponent implements OnInit {
             ajaxURL: "http://localhost:8080/api/v1/authors/filter",
             ajaxURLGenerator: (url, config, params) => {
                 params.searchTerm = this.searchTerm;
+                if (this.authenticationService.currentUserValue) {
+                    config.headers = {
+                        'Authorization': `Bearer ${this.authenticationService.currentUserValue.accessToken}`
+                    };
+                }
                 return url + "?params=" + encodeURI(JSON.stringify(params));
             },
             paginationSize: 20,
@@ -61,11 +68,11 @@ export class AuthorsComponent implements OnInit {
                 {column: 'id', dir: 'desc'},
             ],
             columns: [
-                {title: 'Edit', formatter: editIcon, width: 60, align: 'center', headerSort: false},
+                {title: 'Edit', formatter: editIcon, width: 60, hozAlign: 'center', headerSort: false},
                 {title: 'Id', field: 'id', width: 60},
                 {title: 'First name', field: 'firstName'},
                 {title: 'Last name', field: 'lastName'},
-                {title: 'Delete', formatter: 'buttonCross', align: 'center', width: 100, headerSort: false},
+                {title: 'Delete', formatter: 'buttonCross', hozAlign: 'center', width: 100, headerSort: false},
             ],
             rowDblClick: (e, row) => {
                 this.router.navigate([`/edit-authors/${row.getData().id}`]);
@@ -73,7 +80,7 @@ export class AuthorsComponent implements OnInit {
             cellClick: (e, cell) => {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-authors/${cell.getData().id}`]);
-                } else if(cell.getColumn().getDefinition().title == "Delete"){
+                } else if (cell.getColumn().getDefinition().title == "Delete") {
                     this.authorsServer.deleteAuthor(cell.getData().id);
                     cell.getRow().delete();
                 }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AuthService} from './auth/auth.service';
 import {LoggingService} from './logging.service';
+import {AuthenticationService} from "./auth/authentication.service";
 
 declare var $: any;
 
@@ -12,13 +12,12 @@ declare var $: any;
 })
 export class AppComponent implements OnInit {
     constructor(
-        private authService: AuthService,
+        private authService: AuthenticationService,
         private loggingService: LoggingService
     ) {
     }
 
     ngOnInit() {
-        this.authService.autoLogin();
         this.loggingService.printLog('Hello from AppComponent ngOnInit');
     }
 }

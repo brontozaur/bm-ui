@@ -4,7 +4,7 @@ import Tabulator from 'tabulator-tables';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UsersService} from './users.service';
 import {UserBook} from "./user-book.model";
-import {Subscription} from "rxjs";
+import {AuthenticationService} from "../auth/authentication.service";
 
 @Component({
     selector: 'app-users',
@@ -21,8 +21,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private loggingService: LoggingService,
-                private usersServer: UsersService
-    ){}
+                private usersServer: UsersService,
+                private authenticationService: AuthenticationService
+    ) {
+    }
 
     ngOnInit() {
         var editIcon = function (cell, formatterParams, onRendered) {
@@ -54,6 +56,11 @@ export class UsersComponent implements OnInit, OnDestroy {
             ajaxURL: "http://localhost:8080/api/v1/users/filter",
             ajaxURLGenerator: (url, config, params) => {
                 params.searchTerm = this.searchTerm;
+                if (this.authenticationService.currentUserValue) {
+                    config.headers = {
+                        'Authorization': `Bearer ${this.authenticationService.currentUserValue.accessToken}`
+                    };
+                }
                 return url + "?params=" + encodeURI(JSON.stringify(params));
             },
             paginationSize: 20,
@@ -61,14 +68,14 @@ export class UsersComponent implements OnInit, OnDestroy {
                 {column: 'name', dir: 'asc'},
             ],
             columns: [
-                {title: 'Edit', formatter: editIcon, width: 60, align: 'center', headerSort: false},
+                {title: 'Edit', formatter: editIcon, width: 60, hozAlign: 'center', headerSort: false},
                 {title: 'Id', field: 'id', width: 60},
                 {title: 'First name', field: 'firstName'},
                 {title: 'Last name', field: 'lastName'},
                 {title: 'Role', field: 'role'},
                 {title: 'Username', field: 'username'},
                 {title: 'Email', field: 'email'},
-                {title: 'Delete', formatter: 'buttonCross', align: 'center', width: 100, headerSort: false},
+                {title: 'Delete', formatter: 'buttonCross', hozAlign: 'center', width: 100, headerSort: false},
             ],
             rowDblClick: (e, row) => {
                 this.router.navigate([`/edit-users/${row.getData().id}`]);
@@ -76,7 +83,7 @@ export class UsersComponent implements OnInit, OnDestroy {
             cellClick: (e, cell) => {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-users/${cell.getData().id}`]);
-                } else if(cell.getColumn().getDefinition().title == "Delete"){
+                } else if (cell.getColumn().getDefinition().title == "Delete") {
                     this.usersServer.deleteUser(cell.getData().id);
                     cell.getRow().delete();
                 }
@@ -93,5 +100,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.table.setData();
     }
 
-    ngOnDestroy() {}
+    ngOnDestroy() {
+    }
 }

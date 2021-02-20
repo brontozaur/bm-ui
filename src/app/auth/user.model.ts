@@ -1,16 +1,17 @@
+import {UserResourceModel} from "./user.resource.model";
+
 export class User {
     constructor(
-        public email: string,
-        public id: string,
-        private _token: string,
-        private _tokenExpirationDate: Date
+        public userResource: UserResourceModel,
+        public accessToken: string,
+        public expiresIn: number
     ) {
     }
 
     get token() {
-        if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
+        if (!this.expiresIn || new Date() > new Date(this.expiresIn)) {
             return null;
         }
-        return this._token;
+        return this.accessToken;
     }
 }

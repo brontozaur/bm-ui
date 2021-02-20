@@ -8,28 +8,32 @@ import {UserEditComponent} from './users/user-edit/user-edit.component';
 import {AuthorEditComponent} from './authors/author-edit/author-edit.component';
 import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from './core.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BookEditComponent} from './books/book-edit/book-edit.component';
 import {BooksUploadComponent} from './books/books-upload/books-upload.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DistributorEditComponent} from "./distributors/distributor-edit/distributor-edit.component";
+import {LoginComponent} from "./auth/login.component";
 
 @NgModule({
     declarations: [
         AppComponent,
+        LoginComponent,
         UserEditComponent,
         BookEditComponent,
         BooksUploadComponent,
         AuthorEditComponent,
         HeaderComponent,
-        DistributorEditComponent],
+        DistributorEditComponent
+    ],
     imports: [
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
         CoreModule,
         FormsModule,
+        ReactiveFormsModule,
         NoopAnimationsModule,
         MatSnackBarModule
     ],
