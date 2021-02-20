@@ -18,7 +18,7 @@ export class BooksComponent implements OnInit {
 
     private books: Book[] = [];
     private table;
-    searchTerm: string = "";
+    private searchTerm: string = "";
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -72,6 +72,12 @@ export class BooksComponent implements OnInit {
                     };
                 }
                 return url + "?params=" + encodeURI(JSON.stringify(params));
+            },
+            ajaxError: (xhr, textStatus, errorThrown) => {
+                if (xhr.status == 401) {
+                    this.authenticationService.logout();
+                    this.router.navigate(['/login'], {queryParams: {returnUrl: "books"}});
+                }
             },
             paginationSize: 20,
             initialSort: [

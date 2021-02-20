@@ -63,6 +63,12 @@ export class UsersComponent implements OnInit, OnDestroy {
                 }
                 return url + "?params=" + encodeURI(JSON.stringify(params));
             },
+            ajaxError: (xhr, textStatus, errorThrown) => {
+                if (xhr.status == 401) {
+                    this.authenticationService.logout();
+                    this.router.navigate(['/login'], {queryParams: {returnUrl: "users"}});
+                }
+            },
             paginationSize: 20,
             initialSort: [
                 {column: 'name', dir: 'asc'},

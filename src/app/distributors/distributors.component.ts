@@ -63,6 +63,12 @@ export class DistributorsComponent implements OnInit, OnDestroy {
                 }
                 return url + "?params=" + encodeURI(JSON.stringify(params));
             },
+            ajaxError: (xhr, textStatus, errorThrown) => {
+                if (xhr.status == 401) {
+                    this.authenticationService.logout();
+                    this.router.navigate(['/login'], {queryParams: {returnUrl: "distributors"}});
+                }
+            },
             paginationSize: 20,
             initialSort: [
                 {column: 'id', dir: 'desc'},

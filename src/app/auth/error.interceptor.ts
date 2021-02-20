@@ -3,10 +3,12 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {AuthenticationService} from "./authentication.service";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService,
+              private router: Router) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -15,7 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         // auto logout if 401 response returned from api
         if (!errorResponse.url || !errorResponse.url.endsWith("login")) {
           this.authenticationService.logout();
-          location.reload(true);
+          this.router.navigate(['/login'], {queryParams: {returnUrl: errorResponse.url}});
         }
       }
 
