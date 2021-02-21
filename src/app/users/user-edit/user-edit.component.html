@@ -6,7 +6,7 @@
             <button class="btn btn-primary" (click)="goBack()">Back</button>
         </div>
         <div class="col-xs-6">
-            <button class="btn btn-success pull-right" (click)="saveUser(userEditForm)">Save User</button>
+            <button class="btn btn-success pull-right" (click)="saveUser(userEditForm)">Save user</button>
         </div>
     </div>
 </form>
@@ -50,10 +50,17 @@
             </div>
             <div class="form-group col-xs-6">
                 <label for="role">Role</label>
-                <select name="role" id="role" class="form-control" [(ngModel)]="user.role">
-                    <option value="ADMIN">Admin</option>
-                    <option value="USER">User</option>
+                <select name="role" id="role" class="form-control" [(ngModel)]="user.role"
+                        *ngIf="userRole == 'ADMIN' || userRole == 'SUPERADMIN'">
+                    <option value="ADMIN" *ngIf="userRole == 'SUPERADMIN' || user.id > 0">Admin</option>
+                    <option value="USER" *ngIf="userRole == 'ADMIN' || userRole == 'SUPERADMIN'">User</option>
                 </select>
+                <input disabled
+                       *ngIf="userRole == 'USER'"
+                       class="form-control"
+                       [(ngModel)]="user.role"
+                       name="userRole"
+                />
             </div>
             <div class="form-group col-xs-6">
                 <label for="username">Username</label>

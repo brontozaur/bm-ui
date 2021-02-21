@@ -5,6 +5,7 @@ import {UsersService} from '../users.service';
 import {NotificationService} from "../../notification.service";
 import {Distributor} from "../../distributors/distributor.model";
 import {DistributorsService} from "../../distributors/distributors.service";
+import {AuthenticationService} from "../../auth/authentication.service";
 
 @Component({
     selector: 'app-user-detail',
@@ -13,18 +14,21 @@ import {DistributorsService} from "../../distributors/distributors.service";
 })
 export class UserEditComponent implements OnInit {
     user: UserBook;
+    userRole: string;
     distributors: Array<Distributor>;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: UsersService,
                 private notification: NotificationService,
+                private authService: AuthenticationService,
                 private distributorService: DistributorsService) {
     }
 
     ngOnInit() {
         this.route.data.subscribe((data: { user: UserBook, distributors: Distributor[] }) => {
             this.user = data.user;
+            this.userRole = data.user.role || this.authService.currentUserValue.userResource.role;
             this.distributors = data.distributors;
         });
     }
