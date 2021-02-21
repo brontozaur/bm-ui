@@ -87,6 +87,7 @@ export class BooksService {
         this.http.post<any>(`${environment.apiUrl}/api/v1/books/encrypt`, books).subscribe({
             next: data => {
                 table.setData();
+                this.notification.showOKNotification("Books encrypted!");
             },
             error: error => {
                 this.notification.showErrorNotification(error);

@@ -4,6 +4,7 @@ import {Book} from '../book.model';
 import {BooksService} from '../books.service';
 import {Author} from '../../authors/author.model';
 import {NotificationService} from "../../notification.service";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-book-detail',
@@ -21,14 +22,18 @@ export class BookEditComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: BooksService,
-                private notification: NotificationService) {
+                private notification: NotificationService,
+                private sanitizer: DomSanitizer) {
     }
 
     ngOnInit() {
         this.route.data.subscribe((data: { book: Book, authors: Author[] }) => {
             this.book = data.book;
             this.authors = data.authors;
-            this.imageFile = this.book.image;
+
+            let objectURL = 'data:image/png;base64,' + this.book.imageBook;
+            this.imageFile = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
             if (this.book.authors.length == 0) {
                 this.book.authors.push(new Author());
             }
