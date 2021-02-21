@@ -4,10 +4,12 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {AuthenticationService} from "./authentication.service";
 import {Router} from "@angular/router";
+import {NotificationService} from "../notification.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService,
+              private notificationService: NotificationService,
               private router: Router) {
   }
 
@@ -18,6 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (!errorResponse.url || !errorResponse.url.endsWith("login")) {
           this.authenticationService.logout();
           this.router.navigate(['/login'], {queryParams: {returnUrl: errorResponse.url}});
+          this.notificationService.showErrorNotification("Token expired or invalid. Please login again.");
+          return;
         }
       }
 

@@ -14,7 +14,7 @@ export class DistributorEditResolver implements Resolve<Distributor> {
         if (id === 0) {
             return new Distributor(null, null, "", '', '', '', '', 0, '', '');
         }
-        console.log('Get the Distributor with id', id);
+        console.log('Get the distributor with id', id);
         return this.service.getDistributor(id);
     }
 }
