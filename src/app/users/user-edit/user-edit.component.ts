@@ -6,6 +6,7 @@ import {NotificationService} from "../../notification.service";
 import {Distributor} from "../../distributors/distributor.model";
 import {DistributorsService} from "../../distributors/distributors.service";
 import {AuthenticationService} from "../../auth/authentication.service";
+import {UserRole} from "../../auth/userRole";
 
 @Component({
     selector: 'app-user-detail',
@@ -14,8 +15,9 @@ import {AuthenticationService} from "../../auth/authentication.service";
 })
 export class UserEditComponent implements OnInit {
     user: UserBook;
-    userRole: string;
     distributors: Array<Distributor>;
+    userRoles: Array<UserRole>;
+    readOnlyRole: boolean;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -28,8 +30,8 @@ export class UserEditComponent implements OnInit {
     ngOnInit() {
         this.route.data.subscribe((data: { user: UserBook, distributors: Distributor[] }) => {
             this.user = data.user;
-            this.userRole = data.user.role || this.authService.currentUserValue.userResource.role;
             this.distributors = data.distributors;
+            this.userRoles = this.getUserRoles();
         });
     }
 
@@ -45,4 +47,38 @@ export class UserEditComponent implements OnInit {
         this.router.navigate(['users']);
     }
 
+    /**
+     * Handles the edit/ create roles display. Logic is: current user can edit or create only users with role < his role.
+     * We should probably restrict the users display entirely!
+     */
+    getUserRoles() {
+        let userRoles = [];
+        const currentUserRole = this.authService.currentUserValue.userResource.role;
+        const isEditMyself = this.user.id == this.authService.currentUserValue.userResource.id;
+        this.readOnlyRole = false;
+
+        switch (currentUserRole) {
+            case 'SUPERADMIN': {
+                if (isEditMyself) {
+                    userRoles.push(new UserRole('SUPERADMIN', 'Super admin'));
+                }
+                userRoles.push(new UserRole('ADMIN', 'Admin'));
+                userRoles.push(new UserRole('USER', 'User'));
+                break;
+            }
+            case 'ADMIN': {
+                if (isEditMyself) {
+                    userRoles.push(new UserRole('ADMIN', 'Admin'));
+                }
+                userRoles.push(new UserRole('USER', 'User'));
+                break;
+            }
+            case 'USER': {
+                userRoles.push(new UserRole('USER', 'User'));
+                this.readOnlyRole = true;
+                break;
+            }
+        }
+        return userRoles;
+    }
 }

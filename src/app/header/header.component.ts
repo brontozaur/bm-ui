@@ -10,6 +10,7 @@ import {AuthenticationService} from "../auth/authentication.service";
 export class HeaderComponent implements OnInit, OnDestroy {
     isAuthenticated = false;
     private userSub: Subscription;
+    private loggedUser: string;
 
     constructor(
         private authService: AuthenticationService
@@ -19,6 +20,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.userSub = this.authService.currentUser.subscribe(user => {
             this.isAuthenticated = !!user;
+            this.loggedUser = '';
+            if (user) {
+                this.loggedUser += '(' + user.userResource.name + ")";
+            }
         });
     }
 

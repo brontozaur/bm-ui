@@ -51,12 +51,11 @@
             <div class="form-group col-xs-6">
                 <label for="role">Role</label>
                 <select name="role" id="role" class="form-control" [(ngModel)]="user.role"
-                        *ngIf="userRole == 'ADMIN' || userRole == 'SUPERADMIN'">
-                    <option value="ADMIN" *ngIf="userRole == 'SUPERADMIN' || user.id > 0">Admin</option>
-                    <option value="USER" *ngIf="userRole == 'ADMIN' || userRole == 'SUPERADMIN'">User</option>
+                        *ngIf="!readOnlyRole">
+                    <option *ngFor="let role of userRoles" [value]="role.value">{{role.label}}</option>
                 </select>
                 <input disabled
-                       *ngIf="userRole == 'USER'"
+                       *ngIf="readOnlyRole"
                        class="form-control"
                        [(ngModel)]="user.role"
                        name="userRole"
