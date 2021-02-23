@@ -98,10 +98,12 @@
             <div class="form-group col-xs-4">
                 <label for="country">Link Expiration</label>
                 <input
-                        type="linkExpiration"
+                        type="number"
                         id="linkExpiration"
                         class="form-control"
                         [(ngModel)]="distributor.linkExpiration"
+                        min="0"
+                        max="999"
                         name="linkExpiration"
                 />
             </div>
