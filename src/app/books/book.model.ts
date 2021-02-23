@@ -14,6 +14,7 @@ export class Book {
     public createdBy: string;
     public updatedAt: Date;
     public updatedBy: string;
+    public imageBook: object;
 
     constructor(id: number,
                 title: string,
