@@ -145,8 +145,9 @@ export class BooksComponent implements OnInit {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-books/${cell.getData().id}`]);
                 } else if (cell.getColumn().getDefinition().title == "Delete") {
-                    this.booksServer.deleteBook(cell.getData().id);
-                    cell.getRow().delete();
+                    this.booksServer.deleteBook(cell.getData().id, function() {
+                        cell.getRow().delete();
+                    });
                 } else if (cell.getColumn().getDefinition().title == "Dnd encrypted") {
                     if (cell.getData().status == 'GREEN') {
                         this.booksServer.downloadEncryptedBook(cell.getData());
@@ -156,6 +157,11 @@ export class BooksComponent implements OnInit {
                 } else {
                     cell.getRow().toggleSelect();
                 }
+            },
+            ajaxResponse:function(url, params, response) {
+                var el = document.getElementById("row-count");
+                el.innerHTML = "Showing " + response.numberOfElements + " of " + response.totalElements;
+                return response;
             }
         });
         this.table.setData();

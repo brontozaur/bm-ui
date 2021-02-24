@@ -61,6 +61,7 @@ export class UserEditComponent implements OnInit {
             case 'SUPERADMIN': {
                 if (isEditMyself) {
                     userRoles.push(new UserRole('SUPERADMIN', 'Super admin'));
+                    this.readOnlyRole = true;
                 }
                 userRoles.push(new UserRole('ADMIN', 'Admin'));
                 userRoles.push(new UserRole('USER', 'User'));

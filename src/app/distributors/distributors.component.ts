@@ -7,7 +7,6 @@ import {Distributor} from "./distributor.model";
 import {AuthenticationService} from "../auth/authentication.service";
 import {NotificationService} from "../notification.service";
 import {environment} from "../../environments/environment";
-
 @Component({
     selector: 'app-distributors',
     templateUrl: './distributors.component.html',
@@ -100,6 +99,11 @@ export class DistributorsComponent implements OnInit, OnDestroy {
                     this.distributorsServer.deleteDistributor(cell.getData().id);
                     cell.getRow().delete();
                 }
+            },
+            ajaxResponse:function(url, params, response) {
+                var el = document.getElementById("row-count");
+                el.innerHTML = "Showing " + response.numberOfElements + " of " + response.totalElements;
+                return response;
             }
         });
         this.table.setData();

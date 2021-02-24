@@ -44,11 +44,18 @@ export class BooksService {
         })
     }
 
-    deleteBook(id: number) {
+    deleteBook(id: number, callbackFcn: () => void) {
         return this.http.delete(`${environment.apiUrl}/api/v1/books/` + id)
-            .subscribe(() => {
-                this.notification.showOKNotification("Deleted successfully!");
-                console.log('Delete successful');
+            .subscribe({
+                next: data => {
+                    callbackFcn();
+                    this.notification.showOKNotification("Deleted successfully!");
+                    console.log('Delete successful');
+                },
+                error: error => {
+                    this.notification.showErrorNotification(error);
+                    console.error('There was an error!', error);
+                }
             });
     }
 

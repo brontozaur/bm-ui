@@ -98,6 +98,11 @@ export class UsersComponent implements OnInit, OnDestroy {
                     this.usersServer.deleteUser(cell.getData().id);
                     cell.getRow().delete();
                 }
+            },
+            ajaxResponse:function(url, params, response) {
+                var el = document.getElementById("row-count");
+                el.innerHTML = "Showing " + response.numberOfElements + " of " + response.totalElements;
+                return response;
             }
         });
         this.table.setData();
