@@ -11,10 +11,12 @@ import {CoreModule} from './core.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BookEditComponent} from './books/book-edit/book-edit.component';
 import {BooksUploadComponent} from './books/books-upload/books-upload.component';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DistributorEditComponent} from "./distributors/distributor-edit/distributor-edit.component";
 import {LoginComponent} from "./auth/login.component";
+import {MatDialogModule} from "@angular/material";
+import {ConfirmDialogComponent} from "./dialog/confirm-dialog.component";
 
 @NgModule({
     declarations: [
@@ -25,7 +27,8 @@ import {LoginComponent} from "./auth/login.component";
         BooksUploadComponent,
         AuthorEditComponent,
         HeaderComponent,
-        DistributorEditComponent
+        DistributorEditComponent,
+        ConfirmDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -35,9 +38,12 @@ import {LoginComponent} from "./auth/login.component";
         FormsModule,
         ReactiveFormsModule,
         NoopAnimationsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        BrowserAnimationsModule,
+        MatDialogModule
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule {
 }

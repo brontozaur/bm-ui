@@ -7,6 +7,8 @@ import {Author} from "./author.model";
 import {AuthenticationService} from "../auth/authentication.service";
 import {NotificationService} from "../notification.service";
 import {environment} from "../../environments/environment";
+import {MatDialog} from "@angular/material";
+import {ConfirmDialogComponent} from "../dialog/confirm-dialog.component";
 
 @Component({
     selector: 'app-users',
@@ -25,7 +27,8 @@ export class AuthorsComponent implements OnInit {
                 private notification: NotificationService,
                 private loggingService: LoggingService,
                 private authorsServer: AuthorsService,
-                private authenticationService: AuthenticationService
+                private authenticationService: AuthenticationService,
+                private dialog: MatDialog
     ) {
     }
 
@@ -92,8 +95,21 @@ export class AuthorsComponent implements OnInit {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-authors/${cell.getData().id}`]);
                 } else if (cell.getColumn().getDefinition().title == "Delete") {
-                    this.authorsServer.deleteAuthor(cell.getData().id);
-                    cell.getRow().delete();
+                    var authorName = cell.getData().firstName + " " + cell.getData().lastName;
+                    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                        data: {
+                            title: 'Confirm remove author',
+                            message: 'Are you sure you want to remove the author ' + authorName
+                        }
+                    });
+                    confirmDialog.afterClosed().subscribe(result => {
+                        if (result === true) {
+                            this.authorsServer.deleteAuthor(cell.getData().id, function() {
+                                cell.getRow().delete();
+                            });
+                        }
+                    });
+
                 }
             },
             ajaxResponse:function(url, params, response) {

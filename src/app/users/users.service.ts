@@ -32,9 +32,10 @@ export class UsersService {
         })
     }
 
-    deleteUser(id: number) {
+    deleteUser(id: number, callbackFcn: () => void) {
         return this.http.delete(`${environment.apiUrl}/api/v1/users/` + id)
             .subscribe(() => {
+                callbackFcn();
                 this.notification.showOKNotification("Deleted successfully!");
                 console.log('Delete successful');
             });

@@ -30,9 +30,10 @@ export class DistributorsService {
         })
     }
 
-    deleteDistributor(id: number) {
+    deleteDistributor(id: number, callbackFcn: () => void) {
         return this.http.delete(`${environment.apiUrl}/api/v1/distributors/` + id)
             .subscribe(() => {
+                callbackFcn();
                 this.notification.showOKNotification("Deleted successfully!");
                 console.log('Delete successful');
             });

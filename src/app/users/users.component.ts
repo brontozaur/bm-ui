@@ -7,6 +7,8 @@ import {UserBook} from "./user-book.model";
 import {AuthenticationService} from "../auth/authentication.service";
 import {NotificationService} from "../notification.service";
 import {environment} from "../../environments/environment";
+import {ConfirmDialogComponent} from "../dialog/confirm-dialog.component";
+import {MatDialog} from "@angular/material";
 
 @Component({
     selector: 'app-users',
@@ -25,7 +27,8 @@ export class UsersComponent implements OnInit, OnDestroy {
                 private loggingService: LoggingService,
                 private usersServer: UsersService,
                 private notification: NotificationService,
-                private authenticationService: AuthenticationService
+                private authenticationService: AuthenticationService,
+                private dialog: MatDialog
     ) {
     }
 
@@ -95,9 +98,22 @@ export class UsersComponent implements OnInit, OnDestroy {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-users/${cell.getData().id}`]);
                 } else if (cell.getColumn().getDefinition().title == "Delete") {
-                    this.usersServer.deleteUser(cell.getData().id);
-                    cell.getRow().delete();
+                    var userName = cell.getData().firstName + " " + cell.getData().lastName;
+                    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                        data: {
+                            title: 'Confirm remove user',
+                            message: 'Are you sure you want to remove the user ' + userName
+                        }
+                    });
+                    confirmDialog.afterClosed().subscribe(result => {
+                        if (result === true) {
+                            this.usersServer.deleteUser(cell.getData().id, function () {
+                                cell.getRow().delete();
+                            });
+                        }
+                    });
                 }
+
             },
             ajaxResponse:function(url, params, response) {
                 var el = document.getElementById("row-count");

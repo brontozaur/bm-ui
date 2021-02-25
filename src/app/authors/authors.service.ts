@@ -31,9 +31,10 @@ export class AuthorsService {
         })
     }
 
-    deleteAuthor(id: number) {
+    deleteAuthor(id: number, callbackFcn: () => void) {
         return this.http.delete(`${environment.apiUrl}/api/v1/authors/` + id)
             .subscribe(() => {
+                callbackFcn();
                 this.notification.showOKNotification("Deleted successfully!");
                 console.log('Delete successful');
             });

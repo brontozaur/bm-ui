@@ -8,6 +8,8 @@ import {Book} from "./book.model";
 import {NotificationService} from "../notification.service";
 import {AuthenticationService} from "../auth/authentication.service";
 import {environment} from "../../environments/environment";
+import {MatDialog} from "@angular/material";
+import {ConfirmDialogComponent} from "../dialog/confirm-dialog.component";
 
 @Component({
     selector: 'app-books',
@@ -26,7 +28,8 @@ export class BooksComponent implements OnInit {
                 private loggingService: LoggingService,
                 private booksServer: BooksService,
                 private notification: NotificationService,
-                private authenticationService: AuthenticationService
+                private authenticationService: AuthenticationService,
+                private dialog: MatDialog
     ) {
     }
 
@@ -145,9 +148,21 @@ export class BooksComponent implements OnInit {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-books/${cell.getData().id}`]);
                 } else if (cell.getColumn().getDefinition().title == "Delete") {
-                    this.booksServer.deleteBook(cell.getData().id, function() {
-                        cell.getRow().delete();
+                    var bookName = cell.getData().title;
+                    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                        data: {
+                            title: 'Confirm remove book',
+                            message: 'Are you sure you want to remove the book ' + bookName
+                        }
                     });
+                    confirmDialog.afterClosed().subscribe(result => {
+                        if (result === true) {
+                            this.booksServer.deleteBook(cell.getData().id, function() {
+                                cell.getRow().delete();
+                            });
+                        }
+                    });
+
                 } else if (cell.getColumn().getDefinition().title == "Dnd encrypted") {
                     if (cell.getData().status == 'GREEN') {
                         this.booksServer.downloadEncryptedBook(cell.getData());

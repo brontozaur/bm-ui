@@ -18,6 +18,8 @@ export class UserEditComponent implements OnInit {
     distributors: Array<Distributor>;
     userRoles: Array<UserRole>;
     readOnlyRole: boolean;
+    readOnlyProperties: boolean;
+    confirmPassword: string;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -32,10 +34,15 @@ export class UserEditComponent implements OnInit {
             this.user = data.user;
             this.distributors = data.distributors;
             this.userRoles = this.getUserRoles();
+            this.confirmPassword = this.user.password;
         });
     }
 
     saveUser(userEditForm) {
+        if(this.user.password != this.confirmPassword) {
+            this.notification.showErrorNotification("Invalid form. Passwords do not match.");
+            return;
+        }
         if (userEditForm.form.status !== 'VALID') {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
@@ -56,7 +63,7 @@ export class UserEditComponent implements OnInit {
         const currentUserRole = this.authService.currentUserValue.userResource.role;
         const isEditMyself = this.user.id == this.authService.currentUserValue.userResource.id;
         this.readOnlyRole = false;
-
+        this.readOnlyProperties = false;
         switch (currentUserRole) {
             case 'SUPERADMIN': {
                 if (isEditMyself) {
@@ -77,6 +84,7 @@ export class UserEditComponent implements OnInit {
             case 'USER': {
                 userRoles.push(new UserRole('USER', 'User'));
                 this.readOnlyRole = true;
+                this.readOnlyProperties = true;
                 break;
             }
         }

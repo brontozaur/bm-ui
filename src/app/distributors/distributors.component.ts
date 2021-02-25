@@ -7,6 +7,8 @@ import {Distributor} from "./distributor.model";
 import {AuthenticationService} from "../auth/authentication.service";
 import {NotificationService} from "../notification.service";
 import {environment} from "../../environments/environment";
+import {MatDialog} from "@angular/material";
+import {ConfirmDialogComponent} from "../dialog/confirm-dialog.component";
 @Component({
     selector: 'app-distributors',
     templateUrl: './distributors.component.html',
@@ -24,7 +26,8 @@ export class DistributorsComponent implements OnInit, OnDestroy {
                 private notification: NotificationService,
                 private loggingService: LoggingService,
                 private distributorsServer: DistributorsService,
-                private authenticationService: AuthenticationService
+                private authenticationService: AuthenticationService,
+                private dialog: MatDialog
     ) {
     }
 
@@ -96,8 +99,20 @@ export class DistributorsComponent implements OnInit, OnDestroy {
                 if (cell.getColumn().getDefinition().title == "Edit") {
                     this.router.navigate([`/edit-distributors/${cell.getData().id}`]);
                 } else if (cell.getColumn().getDefinition().title == "Delete") {
-                    this.distributorsServer.deleteDistributor(cell.getData().id);
-                    cell.getRow().delete();
+                    var distributor = cell.getData().name;
+                    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+                        data: {
+                            title: 'Confirm remove distributor',
+                            message: 'Are you sure you want to remove the distributor ' + distributor
+                        }
+                    });
+                    confirmDialog.afterClosed().subscribe(result => {
+                        if (result === true) {
+                            this.distributorsServer.deleteDistributor(cell.getData().id, function () {
+                                cell.getRow().delete();
+                            });
+                        }
+                    });
                 }
             },
             ajaxResponse:function(url, params, response) {
