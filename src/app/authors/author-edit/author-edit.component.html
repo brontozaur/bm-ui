@@ -14,7 +14,7 @@
 <br>
 <div class="container">
     <div class="row">
-        <form #authorEditForm="ngForm" (ngSubmit)="saveAuthor()">
+        <form #authorEditForm="ngForm" (ngSubmit)="saveAuthor(this)">
             <div class="form-group col-xs-6">
                 <label for="firstName">First name</label>
                 <input

@@ -15,6 +15,11 @@ export class Book {
     public updatedAt: Date;
     public updatedBy: string;
     public imageBook: object;
+    public encrypted;
+    public language;
+    public publisher;
+    public format;
+    public epub;
 
     constructor(id: number,
                 title: string,

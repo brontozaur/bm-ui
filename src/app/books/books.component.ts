@@ -21,7 +21,7 @@ export class BooksComponent implements OnInit {
 
     private books: Book[] = [];
     private table;
-    private searchTerm: string = "";
+    public searchTerm: string = "";
 
     constructor(private router: Router,
                 private route: ActivatedRoute,

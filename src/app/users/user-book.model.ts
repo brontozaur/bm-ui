@@ -6,6 +6,7 @@ export class UserBook {
     public username: string;
     public password: string;
     public email: string;
+    public idDistributor;
 
     constructor(id: number,
                 firstName: string,
