@@ -34,6 +34,7 @@ export class BooksComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("books");
 
         var editIcon = function (cell, formatterParams, onRendered) {
             return '<i class=\'fas fa-pencil-alt\'></i>';

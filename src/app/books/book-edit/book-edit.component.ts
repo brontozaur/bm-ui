@@ -5,6 +5,7 @@ import {BooksService} from '../books.service';
 import {Author} from '../../authors/author.model';
 import {NotificationService} from "../../notification.service";
 import { DomSanitizer } from '@angular/platform-browser';
+import {AuthenticationService} from "../../auth/authentication.service";
 
 @Component({
     selector: 'app-book-detail',
@@ -24,10 +25,13 @@ export class BookEditComponent implements OnInit {
                 private route: ActivatedRoute,
                 private service: BooksService,
                 private notification: NotificationService,
-                private sanitizer: DomSanitizer) {
+                private sanitizer: DomSanitizer,
+                private authenticationService: AuthenticationService) {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("books");
+
         this.route.data.subscribe((data: { book: Book, authors: Author[] }) => {
             this.book = data.book;
             this.authors = data.authors;

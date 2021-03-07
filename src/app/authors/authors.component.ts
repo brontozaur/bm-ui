@@ -33,6 +33,8 @@ export class AuthorsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("authors");
+
         var editIcon = function (cell, formatterParams, onRendered) {
             return '<i class=\'fas fa-pencil-alt\'></i>';
         };

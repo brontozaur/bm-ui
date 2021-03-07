@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Distributor} from '../distributor.model';
 import {DistributorsService} from '../distributors.service';
 import {NotificationService} from "../../notification.service";
+import {AuthenticationService} from "../../auth/authentication.service";
 
 @Component({
     selector: 'app-distributor-detail',
@@ -15,10 +16,13 @@ export class DistributorEditComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: DistributorsService,
-                private notification: NotificationService) {
+                private notification: NotificationService,
+                private authenticationService: AuthenticationService) {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("distributors");
+
         this.route.data.subscribe((data: { distributor: Distributor }) => {
             this.distributor = data.distributor;
         });

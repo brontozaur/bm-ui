@@ -32,6 +32,8 @@ export class DistributorsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("distributors");
+
         var editIcon = function (cell, formatterParams, onRendered) {
             return '<i class=\'fas fa-pencil-alt\'></i>';
         };

@@ -33,6 +33,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("users");
+
         var editIcon = function (cell, formatterParams, onRendered) {
             return '<i class=\'fas fa-pencil-alt\'></i>';
         };

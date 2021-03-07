@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Author} from '../author.model';
 import {AuthorsService} from '../authors.service';
 import {NotificationService} from "../../notification.service";
+import {AuthenticationService} from "../../auth/authentication.service";
 
 @Component({
     selector: 'app-user-detail',
@@ -15,10 +16,13 @@ export class AuthorEditComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: AuthorsService,
-                private notification: NotificationService) {
+                private notification: NotificationService,
+                private authenticationService: AuthenticationService) {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("authors");
+
         this.route.data.subscribe((data: { author: Author }) => {
             this.author = data.author;
         });

@@ -30,6 +30,8 @@ export class UserEditComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.authService.testIfHasToken("users");
+
         this.route.data.subscribe((data: { user: UserBook, distributors: Distributor[] }) => {
             this.user = data.user;
             this.distributors = data.distributors;

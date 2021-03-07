@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BookUpload} from './book-upload.model';
 import {BooksService} from '../books.service';
 import {NotificationService} from "../../notification.service";
+import {AuthenticationService} from "../../auth/authentication.service";
 
 @Component({
     selector: 'app-book-upload',
@@ -21,10 +22,12 @@ export class BooksUploadComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: BooksService,
-                private notification: NotificationService) {
+                private notification: NotificationService,
+                private authenticationService: AuthenticationService) {
     }
 
     ngOnInit() {
+        this.authenticationService.testIfHasToken("upload-books");
     }
 
     goBack() {
