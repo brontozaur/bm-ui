@@ -159,11 +159,13 @@ export class BooksUploadComponent implements OnInit {
                 this.addFile(file, fileName);
             }
         }
+        event.target.value = null;
+        event.returnValue = false;
     }
 
     save() {
         if (!this.isFormValid()) {
-            console.log("Invalid form");
+            console.log("Invalid form");§
             this.notification.showErrorNotification("Invalid form. Please check loaded files.");
             return;
         }
