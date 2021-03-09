@@ -163,7 +163,7 @@
                 <img [src]="imageFile" *ngIf="imageFile" class="image-book center">
                 <div class="center">
                     <br>
-                    <button class="btn btn-primary center" (click)="fileInput.click()">
+                    <button class="btn btn-primary center" (click)="fileInput.click()" [disabled]="readOnlyProperties">
                         <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
                         Change image
                     </button>
