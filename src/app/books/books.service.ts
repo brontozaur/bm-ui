@@ -64,7 +64,7 @@ export class BooksService {
         Array.from(bookMap.entries()).forEach(value => {
             formData.append("files[]", value[1].epubFile);
             formData.append("images[]", value[1].imageFile);
-            formData.append("titles[]", value[1].title);
+            formData.append("titles[]", value[1].epubFile.name);
         });
 
         Array.from(metadataMap.entries()).forEach(value => {

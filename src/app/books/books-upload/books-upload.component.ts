@@ -64,7 +64,7 @@ export class BooksUploadComponent implements OnInit {
         if (bookSelected.isCSV) {
             this.metadataMap.delete(bookSelected.title);
         } else {
-            this.bookMap.delete(bookSelected.title);
+            this.bookMap.delete(bookSelected.mapKey);
         }
     }
 
@@ -79,12 +79,23 @@ export class BooksUploadComponent implements OnInit {
 
         reader.onload = (_event) => {
             var book = this.bookMap.get(bookName);
+            var mapKey = bookName + "." + file.type;
             if (typeof book == "undefined") {
-                book = new BookUpload(bookName, null, null, file, false);
-                this.bookMap.set(bookName, book);
+                book = new BookUpload(bookName, file.type, null, null, file, false, mapKey);
+                var extension = (file.type == "application/epub+zip") ? "application/pdf" : "application/epub+zip";
+                var alreadyExistsBook = this.bookMap.get(bookName + "." + extension) || this.bookMap.get(bookName);
+                if(alreadyExistsBook) {
+                    book.imageFile = alreadyExistsBook.imageFile;
+                    book.image = alreadyExistsBook.image;
+                }
+                this.bookMap.set(book.mapKey, book);
                 this.books.push(book);
-            } else {
+            } else {// for image uploaded first
                 book.epubFile = file;
+                book.mimeType = file.type;
+                book.mapKey = mapKey;
+                this.bookMap.set(mapKey, book);
+                this.bookMap.delete(bookName);
             }
         };
     }
@@ -94,20 +105,29 @@ export class BooksUploadComponent implements OnInit {
         reader.readAsDataURL(file);
 
         reader.onload = (_event) => {
-            var book = this.bookMap.get(bookName);
-            if (typeof book == "undefined") {
-                book = new BookUpload(bookName, null, file, null, false);
+            var existsBook = this.bookMap.get(bookName + "." + "application/epub+zip") || this.bookMap.get(bookName + "." + "application/pdf");
+            if (typeof existsBook == "undefined") {
+                var book = new BookUpload(bookName, null, null, file, null, false, null);
                 this.bookMap.set(bookName, book);
                 this.books.push(book);
+                book.image = reader.result;
             } else {
-                book.imageFile = file;
+                var bookEpub = this.bookMap.get(bookName + "." + "application/epub+zip");
+                if(bookEpub) {
+                    bookEpub.imageFile = file;
+                    bookEpub.image = reader.result;
+                }
+                var bookPdf = this.bookMap.get(bookName + "." + "application/pdf");
+                if(bookPdf) {
+                    bookPdf.imageFile = file;
+                    bookPdf.image = reader.result;
+                }
             }
-            book.image = reader.result;
         };
     }
 
     processMetadata(fileName, file) {
-        var csvFile = new BookUpload(fileName, null, null, null, true);
+        var csvFile = new BookUpload(fileName, null, null, null, null, true, null);
         this.books.push(csvFile);
         this.metadataMap.set(fileName, file);
     }
