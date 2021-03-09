@@ -165,7 +165,7 @@ export class BooksUploadComponent implements OnInit {
 
     save() {
         if (!this.isFormValid()) {
-            console.log("Invalid form");§
+            console.log("Invalid form");
             this.notification.showErrorNotification("Invalid form. Please check loaded files.");
             return;
         }

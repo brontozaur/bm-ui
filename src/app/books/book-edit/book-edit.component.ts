@@ -66,9 +66,6 @@ export class BookEditComponent implements OnInit {
     }
 
     addAuthor() {
-        if(this.readOnlyProperties) {
-            return;
-        }
         this.book.authors.push(new Author());
     }
 
@@ -77,9 +74,6 @@ export class BookEditComponent implements OnInit {
     }
 
     selectFile(event) {
-        if(this.readOnlyProperties) {
-            return;
-        }
         if (!event.target.files[0] || event.target.files[0].length == 0) {
             this.msg = 'You must select an image';
             return;

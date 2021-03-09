@@ -6,7 +6,7 @@
             <button class="btn btn-primary" (click)="goBack()">Back</button>
         </div>
         <div class="col-xs-6">
-            <button class="btn btn-success pull-right" (click)="saveBook(bookEditForm)" [disabled]="readOnlyProperties">Save Book</button>
+            <button class="btn btn-success pull-right" (click)="saveBook(bookEditForm)">Save Book</button>
         </div>
     </div>
 </form>
@@ -23,7 +23,6 @@
                         [(ngModel)]="book.title"
                         name="title"
                         required
-                        [disabled]="readOnlyProperties"
                 />
                 <br>
                 <label>Authors</label>
@@ -31,8 +30,7 @@
                     <br>
                     <div class="col-xs-11 no-padding-left">
                         <input type="text" name="author" class="form-control" list="authors"
-                               value="{{getCompleteName(author)}}" (change)="saveSelectedAuthor($event, i)"
-                               [disabled]="readOnlyProperties">
+                               value="{{getCompleteName(author)}}" (change)="saveSelectedAuthor($event, i)">
                         <datalist id="authors">
                             <option *ngFor="let authorOption of authors" [value]="getCompleteName(authorOption)">
                                 {{getCompleteName(authorOption)}}
@@ -56,7 +54,6 @@
                                 class="form-control"
                                 [(ngModel)]="book.year"
                                 name="year"
-                                [disabled]="readOnlyProperties"
                         />
                     </div>
                     <div class="col-xs-6 no-padding-right">
@@ -67,7 +64,6 @@
                                 class="form-control"
                                 [(ngModel)]="book.category"
                                 name="category"
-                                [disabled]="readOnlyProperties"
                         />
                     </div>
                 </div>
@@ -82,7 +78,6 @@
                                 class="form-control"
                                 [(ngModel)]="book.language"
                                 name="language"
-                                [disabled]="readOnlyProperties"
                         />
                     </div>
                     <div class="col-xs-6 no-padding-right">
@@ -94,7 +89,6 @@
                                 class="form-control"
                                 [(ngModel)]="book.format"
                                 name="format"
-                                [disabled]="readOnlyProperties"
                         />
                         <br>
                     </div>
@@ -154,14 +148,13 @@
                             [(ngModel)]="book.publisher"
                             name="publisher"
                             required
-                            [disabled]="readOnlyProperties"
                     />
                 </div>
                 <br>
                 <div>
                     <label for="description">Description</label>
                     <textarea class="form-control" id="description" rows="3" name="description"
-                              [(ngModel)]="book.description" [disabled]="readOnlyProperties"></textarea>
+                              [(ngModel)]="book.description"></textarea>
                 </div>
             </div>
 
@@ -170,7 +163,7 @@
                 <img [src]="imageFile" *ngIf="imageFile" class="image-book center">
                 <div class="center">
                     <br>
-                    <button class="btn btn-primary center" (click)="fileInput.click()" [disabled]="readOnlyProperties">
+                    <button class="btn btn-primary center" (click)="fileInput.click()">
                         <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
                         Change image
                     </button>
