@@ -39,7 +39,7 @@
                 <img [src]="metadataImage" *ngIf="book.isCSV" class="margin20Right image-book">
                 <img [src]="defaultImage" *ngIf="!book.image && !book.isCSV" class="margin20Right image-book">
                 <img [src]="book.image" *ngIf="book.image" class="margin20Right image-book">
-                <label #titleLabel>{{book.title}}</label>
+                <label #titleLabel>{{substringText(book.title)}}</label>
             </div>
             <div class="col-xs-3 full-height" [ngClass]="(!book.epubFile)?'error':''" *ngIf="!book.isCSV">
                 <div class="center" (click)="fileEpubInput.click()">

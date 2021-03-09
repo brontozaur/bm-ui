@@ -172,6 +172,13 @@ export class BooksUploadComponent implements OnInit {
         this.service.uploadBooks(this.bookMap, this.metadataMap);
     }
 
+    substringText(bookTitle) {
+        if(bookTitle.length > 25) {
+            return bookTitle.substr(0, 25) + "...";
+        }
+        return bookTitle;
+    }
+
     isFormValid() {
         var valid = true;
         if (this.bookMap.size == 0)
