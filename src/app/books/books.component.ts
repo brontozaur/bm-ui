@@ -183,6 +183,10 @@ export class BooksComponent implements OnInit {
         this.table.setData();
     }
 
+    onNewBook() {
+        this.router.navigate(['edit-books/0']);
+    }
+
     upload() {
         this.router.navigate(['/upload-books']);
     }

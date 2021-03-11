@@ -58,7 +58,17 @@ export class BookEditComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
+        if(this.book.epub == null) {
+            this.notification.showErrorNotification("Please select a pdf or epub file");
+            return;
+        }
+        if(this.book.image == null) {
+            this.notification.showErrorNotification("Please select an image");
+            return;
+        }
+
         this.service.saveBook(this.book);
+
     }
 
     goBack() {
@@ -73,21 +83,37 @@ export class BookEditComponent implements OnInit {
         this.book.authors.splice(index, 1);
     }
 
-    selectFile(event) {
+    selectFile(event, isImage) {
         if (!event.target.files[0] || event.target.files[0].length == 0) {
-            this.msg = 'You must select an image';
+            this.msg = 'You must select a file';
             return;
         }
 
         var mimeType = event.target.files[0].type;
 
-        if (mimeType.match(/image\/*/) == null) {
+        if (mimeType.match(/image\/*/) == null && isImage) {
             this.msg = 'Only images are supported';
             return;
         }
+
         var file = event.target.files[0];
-        this.service.uploadImage(file, this.book);
-        this.readAsDataUrl(file);
+
+        if (file && file.name) {
+            let extension = file.name.split('.');
+            if (extension.length > 0) {
+                var isBook = (extension[1] === 'epub' || extension[1] === 'pdf');
+                if(!isImage && !isBook) {
+                    this.msg = 'Only epub or pdf are supported';
+                    this.notification.showErrorNotification(this.msg);
+                    return;
+                }
+            }
+        }
+
+        this.service.uploadFile(file, this.book, isImage);
+        if(isImage) {
+            this.readAsDataUrl(file);
+        }
     }
 
     readAsDataUrl(image) {
@@ -98,6 +124,10 @@ export class BookEditComponent implements OnInit {
             this.msg = '';
             this.imageFile = reader.result;
         };
+    }
+
+    loadEpub(event) {
+        this.selectFile(event, false);
     }
 
     getCompleteName(author) {

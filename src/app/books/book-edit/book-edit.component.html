@@ -120,7 +120,7 @@
                 </div>
 
                 <label for="epub">E-Book name</label>
-                <input
+                <input *ngIf="book.encrypted != null"
                         type="text"
                         id="epub"
                         class="form-control"
@@ -128,6 +128,27 @@
                         name="epub"
                         disabled
                 />
+
+                <div class="col-xs-11 no-padding-left" *ngIf="book.encrypted == null">
+                    <input type="text"
+                           id="epub1"
+                           class="form-control"
+                           [(ngModel)]="book.epub"
+                           name="epub"
+                           disabled
+                           required
+                    />
+                    <br>
+                </div>
+                <div class="col-xs-1 no-padding-right" *ngIf="book.encrypted == null">
+                    <i class="fas fa-file-upload fa-2x" style="color:#449d44" (click)="BookSelectInput.click()"></i>
+                    <input
+                            style="display: none"
+                            type="file" (change)="loadEpub($event)"
+                            #BookSelectInput>
+                </div>
+
+
                 <br>
                 <label for="encrypted">Encrypted book name</label>
                 <input
@@ -165,14 +186,14 @@
                     <br>
                     <button class="btn btn-primary center" (click)="fileInput.click()" [disabled]="readOnlyProperties">
                         <i class="fas fa-file-upload fa-1x" style="color:#fff"></i>
-                        Change image
+                        {{book.id == null ? 'Load image' : 'Change image'}}
                     </button>
                     <input
                             style="display: none"
-                            type="file" (change)="selectFile($event)"
+                            type="file" (change)="selectFile($event, true)"
                             #fileInput>
                 </div>
-                <div class="center">
+                <div class="center" *ngIf="book.id != null">
                     <br>
                     <label>Created at:</label> {{book.createdAt}}
                     <br>

@@ -28,14 +28,21 @@ export class BooksService {
         })
     }
 
-    uploadImage(file, book) {
+
+
+    uploadFile(file, book, isImage) {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('type', isImage);
 
         this.http.post<any>(`${environment.apiUrl}/api/v1/books/upload`, formData,
             {responseType: 'text' as 'json'}).subscribe({
             next: data => {
-                book.image = data;
+                if(isImage) {
+                    book.image = data;
+                } else {
+                    book.epub = data;
+                }
             },
             error: error => {
                 this.notification.showErrorNotification(error);
