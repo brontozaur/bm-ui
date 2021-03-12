@@ -184,12 +184,9 @@ export class BooksUploadComponent implements OnInit {
     }
 
     save() {
-        if (!this.isFormValid()) {
-            console.log("Invalid form");
-            this.notification.showErrorNotification("Invalid form. Please check loaded files.");
-            return;
+        if (this.isFormValid()) {
+            this.service.uploadBooks(this.bookMap, this.metadataMap);
         }
-        this.service.uploadBooks(this.bookMap, this.metadataMap);
     }
 
     substringText(bookTitle) {
@@ -201,11 +198,17 @@ export class BooksUploadComponent implements OnInit {
 
     isFormValid() {
         var valid = true;
-        if (this.bookMap.size == 0)
-            valid = false;
+        if (this.bookMap.size == 0) {
+            this.notification.showErrorNotification("Invalid form. Please load books.");
+            return false;
+        }
         Array.from(this.bookMap.values()).forEach(value => {
-            if (typeof value.epubFile === 'undefined' || value.epubFile == null
-                || typeof value.imageFile === 'undefined' || value.imageFile == null) {
+            if (typeof value.epubFile === 'undefined' || value.epubFile == null) {
+                this.notification.showErrorNotification("Invalid form. Please load a book for missing entry.");
+                valid = false;
+            }
+            if (typeof value.imageFile === 'undefined' || value.imageFile == null) {
+                this.notification.showErrorNotification("Invalid form. Please load an image for missing entry.");
                 valid = false;
             }
         });
