@@ -17,6 +17,7 @@ import {DistributorEditComponent} from "./distributors/distributor-edit/distribu
 import {LoginComponent} from "./auth/login.component";
 import {MatDialogModule} from "@angular/material";
 import {ConfirmDialogComponent} from "./dialog/confirm-dialog.component";
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -41,6 +42,12 @@ import {ConfirmDialogComponent} from "./dialog/confirm-dialog.component";
         MatSnackBarModule,
         BrowserAnimationsModule,
         MatDialogModule
+    ],
+    providers: [
+        {
+            provide: LocationStrategy,
+            useClass: HashLocationStrategy
+        }
     ],
     bootstrap: [AppComponent],
     entryComponents: [ConfirmDialogComponent]
