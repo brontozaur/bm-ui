@@ -110,7 +110,9 @@ export class BookEditComponent implements OnInit {
             }
         }
 
-        this.book.format = mimeType;
+        if (isBook) {
+            this.book.format = mimeType;
+        }
 
         this.service.uploadFile(file, this.book, isImage);
         if(isImage) {
