@@ -13,8 +13,10 @@ Java based server for handling UI requests and forwarding them to Adobe Content 
 * integration with tabulator.io grid system
 * import data/ download ebooks features supported
 * image preview for edit book and import process
+* create/ edit uploaded books
+* download epub/ encrypted epub
 
-## Build
+## Build and start on dev
 
 Can be compiled and started using:
 
@@ -24,6 +26,34 @@ npm start
 ```
 
 or as an Angular CLI server.
+
+## Create and deploy app bundle
+
+```
+ ng build --prod --base-href /bm-ui --deploy-url /bm-ui/
+```
+
+After this, create a war file with the contents of the `/dist` folder and drop it like it's hot in a Tomcat `/webapps` 
+folder. It will automatically be exploded by Tomcat and will be accessible under something like:
+
+```
+http://localhost:8080/bm-ui/
+```
+
+See https://shekhargulati.com/2017/07/06/angular-4-use-of-base-href-and-deploy-url-build-options/ for more details.
+(Backend probably runs in the same Tomcat at):
+
+```
+http://localhost:8080/bm/
+```
+
+See `environment.apiUrl` property for this.
+
+In order to be able to execute the `ng` commands, the `angular/cli` must be installed:
+
+```
+npm install -g @angular/cli
+``` 
 
 # Technology stack
 

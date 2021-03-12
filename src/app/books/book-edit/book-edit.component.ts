@@ -15,7 +15,7 @@ import {AuthenticationService} from "../../auth/authentication.service";
 })
 export class BookEditComponent implements OnInit {
     book: Book;
-    defaultImage = '../../../assets/img/no-image.png';
+    defaultImage = 'books/assets/img/no-image.png';
     imageFile;
     msg: string;
     authors: Author[];
@@ -108,6 +108,10 @@ export class BookEditComponent implements OnInit {
                     return;
                 }
             }
+        }
+
+        if (isBook) {
+            this.book.format = mimeType;
         }
 
         this.service.uploadFile(file, this.book, isImage);

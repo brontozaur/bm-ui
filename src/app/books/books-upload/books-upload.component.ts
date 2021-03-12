@@ -13,8 +13,8 @@ import {AuthenticationService} from "../../auth/authentication.service";
 })
 export class BooksUploadComponent implements OnInit {
     public books: Array<BookUpload> = [];
-    defaultImage = '../../../assets/img/no-image.png';
-    metadataImage = '../../../assets/img/configuration.jpg';
+    defaultImage = 'books/assets/img/no-image.png';
+    metadataImage = 'books/assets/img/configuration.jpg';
     bookMap = new Map();
     metadataMap = new Map();
     msg = '';
