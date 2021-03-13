@@ -123,7 +123,6 @@ export class DistributorsComponent implements OnInit, OnDestroy {
                 return response;
             }
         });
-        this.table.setData();
     }
 
     onNewDistributor() {

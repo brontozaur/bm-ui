@@ -120,7 +120,6 @@ export class AuthorsComponent implements OnInit {
                 return response;
             }
         });
-        this.table.setData();
     }
 
     onNewAuthor() {

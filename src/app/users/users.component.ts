@@ -123,7 +123,6 @@ export class UsersComponent implements OnInit, OnDestroy {
                 return response;
             }
         });
-        this.table.setData();
     }
 
     onNewUser() {

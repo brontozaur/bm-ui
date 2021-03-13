@@ -138,6 +138,7 @@ export class BooksComponent implements OnInit {
                 },
                 {title: 'Updated at', field: 'updatedAt'},
                 {title: 'Updated by', field: 'updatedBy'},
+                {title: 'Format', field: 'format'},
                 {
                     title: 'Download', width: 100, hozAlign: 'center', headerSort: false,
                     formatter: function (cell, formatterParams, onRendered) {
@@ -191,7 +192,6 @@ export class BooksComponent implements OnInit {
                 return response;
             }
         });
-        this.table.setData();
     }
 
     onNewBook() {
