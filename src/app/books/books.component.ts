@@ -108,7 +108,18 @@ export class BooksComponent implements OnInit {
                         let authors = cell.getValue();
                         for (var index in authors) {
                             var author = authors[index];
-                            authorsString += author.firstName + ' ' + author.lastName;
+                            let authorName = '';
+                            if (author.firstName) {
+                                authorName += author.firstName;
+                            }
+                            if (author.lastName) {
+                                if (author.firstName) {
+                                    authorName += ' ' + author.lastName;
+                                } else {
+                                    authorName += author.lastName;
+                                }
+                            }
+                            authorsString += authorName;
                             if (index !== ((authors.length - 1) + "")) {
                                 authorsString += ", ";
                             }

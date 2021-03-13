@@ -4,7 +4,7 @@ import {Book} from '../book.model';
 import {BooksService} from '../books.service';
 import {Author} from '../../authors/author.model';
 import {NotificationService} from "../../notification.service";
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 import {AuthenticationService} from "../../auth/authentication.service";
 
 @Component({
@@ -58,11 +58,11 @@ export class BookEditComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
-        if(this.book.epub == null) {
+        if (this.book.epub == null) {
             this.notification.showErrorNotification("Please select a pdf or epub file");
             return;
         }
-        if(this.book.image == null) {
+        if (this.book.image == null) {
             this.notification.showErrorNotification("Please select an image");
             return;
         }
@@ -102,7 +102,7 @@ export class BookEditComponent implements OnInit {
             let extension = file.name.split('.');
             if (extension.length > 0) {
                 var isBook = (extension[1] === 'epub' || extension[1] === 'pdf');
-                if(!isImage && !isBook) {
+                if (!isImage && !isBook) {
                     this.msg = 'Only epub or pdf are supported';
                     this.notification.showErrorNotification(this.msg);
                     return;
@@ -115,7 +115,7 @@ export class BookEditComponent implements OnInit {
         }
 
         this.service.uploadFile(file, this.book, isImage);
-        if(isImage) {
+        if (isImage) {
             this.readAsDataUrl(file);
         }
     }
@@ -136,7 +136,18 @@ export class BookEditComponent implements OnInit {
 
     getCompleteName(author) {
         if (author && author.id) {
-            return author.firstName + ' ' + author.lastName;
+            let authorName = '';
+            if (author.firstName) {
+                authorName += author.firstName;
+            }
+            if (author.lastName) {
+                if (author.firstName) {
+                    authorName += ' ' + author.lastName;
+                } else {
+                    authorName += author.lastName;
+                }
+            }
+            return authorName;
         }
     }
 
