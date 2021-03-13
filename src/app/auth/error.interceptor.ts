@@ -8,25 +8,26 @@ import {NotificationService} from "../notification.service";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService,
-              private notificationService: NotificationService,
-              private router: Router) {
-  }
+    constructor(private authenticationService: AuthenticationService,
+                private notificationService: NotificationService,
+                private router: Router) {
+    }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(catchError(errorResponse => {
-      if (errorResponse.status === 401) {
-        // auto logout if 401 response returned from api
-        if (!errorResponse.url || !errorResponse.url.endsWith("login")) {
-          this.authenticationService.logout();
-          this.router.navigate(['/login'], {queryParams: {returnUrl: errorResponse.url}});
-          this.notificationService.showErrorNotification("Token expired or invalid. Please login again.");
-          return;
-        }
-      }
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        return next.handle(request).pipe(catchError(errorResponse => {
+            if (errorResponse.status === 401) {
+                // auto logout if 401 response returned from api
+                if (!errorResponse.url || !errorResponse.url.endsWith("login")) {
+                    this.authenticationService.logout();
+                    this.router.navigate(['/login'], {queryParams: {returnUrl: errorResponse.url}});
+                    this.notificationService.showErrorNotification("Token expired or invalid. Please login again.");
+                    return;
+                }
+            }
 
-      const error = (errorResponse.error && errorResponse.error.message ? errorResponse.error.message : undefined) || errorResponse.statusText;
-      return throwError(error);
-    }))
-  }
+            const error = (errorResponse.error && errorResponse.error.message ? errorResponse.error.message : undefined) || errorResponse.statusText;
+            this.notificationService.showErrorNotification(error);
+            return throwError(error);
+        }))
+    }
 }
