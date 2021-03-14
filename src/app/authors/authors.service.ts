@@ -15,13 +15,17 @@ export class AuthorsService {
         return this.http.get<Author>(`${environment.apiUrl}/api/v1/authors/` + id);
     }
 
-    saveAuthor(author: Author) {
+    saveAuthor(author: Author, callbackFcn) {
         this.http.post<Author>(`${environment.apiUrl}/api/v1/authors`, author, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         }).subscribe({
             next: data => {
+                if(callbackFcn) {
+                    callbackFcn(data);
+                    return;
+                }
                 this.router.navigate(['authors']);
             },
             error: error => {

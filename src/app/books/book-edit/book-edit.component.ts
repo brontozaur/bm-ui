@@ -6,6 +6,7 @@ import {Author} from '../../authors/author.model';
 import {NotificationService} from "../../notification.service";
 import {DomSanitizer} from '@angular/platform-browser';
 import {AuthenticationService} from "../../auth/authentication.service";
+import {AuthorsService} from "../../authors/authors.service";
 
 @Component({
     selector: 'app-book-detail',
@@ -21,12 +22,17 @@ export class BookEditComponent implements OnInit {
     authors: Author[];
     readOnlyProperties: boolean;
 
+    newAuthorActive = false;
+    newAuthorButtonText = "Create new";
+    newAuthor = new Author(null, '', '');
+
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private service: BooksService,
                 private notification: NotificationService,
                 private sanitizer: DomSanitizer,
-                private authenticationService: AuthenticationService) {
+                private authenticationService: AuthenticationService,
+                private authorService: AuthorsService) {
     }
 
     ngOnInit() {
@@ -48,6 +54,10 @@ export class BookEditComponent implements OnInit {
     }
 
     saveBook(bookEditForm) {
+        if(this.newAuthorActive) {
+            this.notification.showErrorNotification("Please create the author or cancel add.");
+            return;
+        }
         for (var index in this.book.authors) {
             if (this.book.authors[index] == undefined || this.book.authors[index].id == undefined) {
                 this.notification.showErrorNotification("Please select a valid author");
@@ -155,6 +165,25 @@ export class BookEditComponent implements OnInit {
         let name = $event.target.value;
         let selectedAuthor = this.authors.filter(x => (x.firstName + ' ' + x.lastName) === name)[0];
         this.book.authors[index] = selectedAuthor;
+    }
+
+    toggleNewAuthor() {
+        this.newAuthorActive = !this.newAuthorActive;
+        this.newAuthor = new Author(null, '', '');
+        this.newAuthorButtonText =  this.newAuthorActive ? "Cancel add" : "Create new";
+    }
+
+    saveAuthor(authorEditForm) {
+        if (authorEditForm.form.status !== 'VALID') {
+            this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
+            return;
+        }
+        this.authorService.saveAuthor(this.newAuthor, function(data) {
+            this.toggleNewAuthor();
+            this.authors.push(data);
+            var length = this.book.authors.length;
+            this.book.authors[length] = data;
+        }.bind(this));
     }
 
 }
