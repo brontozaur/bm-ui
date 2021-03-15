@@ -30,14 +30,14 @@ or as an Angular CLI server.
 ## Create and deploy app bundle
 
 ```
- ng build --prod --base-href /bm-ui --deploy-url /bm-ui/
+ ng build --prod --base-href /books --deploy-url /books/
 ```
 
 After this, create a war file with the contents of the `/dist` folder and drop it like it's hot in a Tomcat `/webapps` 
 folder. It will automatically be exploded by Tomcat and will be accessible under something like:
 
 ```
-http://localhost:8080/bm-ui/
+http://localhost:8080/books/
 ```
 
 See https://shekhargulati.com/2017/07/06/angular-4-use-of-base-href-and-deploy-url-build-options/ for more details.
