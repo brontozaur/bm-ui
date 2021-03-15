@@ -54,16 +54,22 @@ export class BookEditComponent implements OnInit {
     }
 
     saveBook(bookEditForm) {
-        if(this.newAuthorActive) {
+        if (this.newAuthorActive) {
             this.notification.showErrorNotification("Please create the author or cancel add.");
             return;
         }
+        var validAuthors = [];
         for (var index in this.book.authors) {
             if (this.book.authors[index] == undefined || this.book.authors[index].id == undefined) {
-                this.notification.showErrorNotification("Please select a valid author");
-                return;
+                continue;
             }
+            validAuthors.push(this.book.authors[index]);
         }
+        if (validAuthors.length == 0) {
+            this.notification.showErrorNotification("Please select a valid author");
+            return;
+        }
+        this.book.authors = validAuthors;
         if (bookEditForm.form.status !== 'VALID') {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
@@ -170,7 +176,7 @@ export class BookEditComponent implements OnInit {
     toggleNewAuthor() {
         this.newAuthorActive = !this.newAuthorActive;
         this.newAuthor = new Author(null, '', '');
-        this.newAuthorButtonText =  this.newAuthorActive ? "Cancel add" : "Create new";
+        this.newAuthorButtonText = this.newAuthorActive ? "Cancel add" : "Create new";
     }
 
     saveAuthor(authorEditForm) {
@@ -178,7 +184,7 @@ export class BookEditComponent implements OnInit {
             this.notification.showErrorNotification("Invalid form. Please complete mandatory fields.");
             return;
         }
-        this.authorService.saveAuthor(this.newAuthor, function(data) {
+        this.authorService.saveAuthor(this.newAuthor, function (data) {
             this.toggleNewAuthor();
             this.authors.push(data);
             var length = this.book.authors.length;

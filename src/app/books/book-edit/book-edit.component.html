@@ -27,7 +27,7 @@
                 <br>
                 <div>
                     <label class="margin10Right">Authors</label>
-                    <button class="btn btn-success" (click)="toggleNewAuthor()">{{newAuthorButtonText}}</button>
+                    <button class="btn btn-success margin10Right" (click)="toggleNewAuthor()">{{newAuthorButtonText}}</button>
                 </div>
 
                 <div *ngIf="newAuthorActive" style="margin-top: 20px; height: 130px; border-radius: 15px; border: 1px solid gray;">
@@ -54,6 +54,7 @@
                         </div>
                         <div class="form-group col-xs-12">
                             <button class="btn btn-success pull-right" (click)="saveAuthor(authorEditForm)">Save author</button>
+                            <button class="btn btn-danger pull-right margin10Right" (click)="toggleNewAuthor()">Cancel</button>
                         </div>
                     </form>
                 </div>
