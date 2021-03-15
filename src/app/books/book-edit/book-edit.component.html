@@ -27,7 +27,8 @@
                 <br>
                 <div>
                     <label class="margin10Right">Authors</label>
-                    <button class="btn btn-success margin10Right" (click)="toggleNewAuthor()">{{newAuthorButtonText}}</button>
+                    <button *ngIf="!newAuthorActive" class="btn btn-success margin10Right"
+                            (click)="toggleNewAuthor()">{{newAuthorButtonText}}</button>
                 </div>
 
                 <div *ngIf="newAuthorActive" style="margin-top: 20px; height: 130px; border-radius: 15px; border: 1px solid gray;">

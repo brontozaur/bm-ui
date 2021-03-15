@@ -176,7 +176,7 @@ export class BookEditComponent implements OnInit {
     toggleNewAuthor() {
         this.newAuthorActive = !this.newAuthorActive;
         this.newAuthor = new Author(null, '', '');
-        this.newAuthorButtonText = this.newAuthorActive ? "Cancel add" : "Create new";
+        this.newAuthorButtonText = "Create new";
     }
 
     saveAuthor(authorEditForm) {
