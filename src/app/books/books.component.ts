@@ -138,7 +138,20 @@ export class BooksComponent implements OnInit {
                 },
                 {title: 'Updated at', field: 'updatedAt'},
                 {title: 'Updated by', field: 'updatedBy'},
-                {title: 'Format', field: 'format'},
+                {
+                    title: 'Format', field: 'format',
+                    formatter: function (cell, formatterParams, onRendered) {
+                        if (!cell.getValue()) {
+                            return '';
+                        }
+                        if (cell.getValue().toLowerCase().indexOf('pdf') != -1) {
+                            return 'PDF';
+                        } else if (cell.getValue().toLowerCase().indexOf('epub') != -1) {
+                            return 'EPUB';
+                        }
+                        return cell.getValue;
+                    }
+                },
                 {
                     title: 'Download', width: 100, hozAlign: 'center', headerSort: false,
                     formatter: function (cell, formatterParams, onRendered) {
@@ -170,7 +183,7 @@ export class BooksComponent implements OnInit {
                     });
                     confirmDialog.afterClosed().subscribe(result => {
                         if (result === true) {
-                            this.booksServer.deleteBook(cell.getData().id, function() {
+                            this.booksServer.deleteBook(cell.getData().id, function () {
                                 cell.getRow().delete();
                             });
                         }
@@ -186,7 +199,7 @@ export class BooksComponent implements OnInit {
                     cell.getRow().toggleSelect();
                 }
             },
-            ajaxResponse:function(url, params, response) {
+            ajaxResponse: function (url, params, response) {
                 var el = document.getElementById("row-count");
                 el.innerHTML = "Showing " + response.numberOfElements + " of " + response.totalElements;
                 return response;
