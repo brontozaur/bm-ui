@@ -15,9 +15,10 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DistributorEditComponent} from "./distributors/distributor-edit/distributor-edit.component";
 import {LoginComponent} from "./auth/login.component";
-import {MatDialogModule} from "@angular/material";
+import {MatDialogModule, MatProgressSpinnerModule} from "@angular/material";
 import {ConfirmDialogComponent} from "./dialog/confirm-dialog.component";
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {DialogSpinnerDialogComponent} from "./spinner/spinner-dialog.component";
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
         AuthorEditComponent,
         HeaderComponent,
         DistributorEditComponent,
-        ConfirmDialogComponent
+        ConfirmDialogComponent,
+        DialogSpinnerDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -41,8 +43,9 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
         NoopAnimationsModule,
         MatSnackBarModule,
         BrowserAnimationsModule,
-        MatDialogModule
-    ],
+        MatDialogModule,
+        MatProgressSpinnerModule
+],
     providers: [
         {
             provide: LocationStrategy,
@@ -50,7 +53,7 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
         }
     ],
     bootstrap: [AppComponent],
-    entryComponents: [ConfirmDialogComponent]
+    entryComponents: [ConfirmDialogComponent, DialogSpinnerDialogComponent]
 })
 export class AppModule {
 }

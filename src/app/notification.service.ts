@@ -12,7 +12,7 @@ export class NotificationService {
 
     showErrorNotification(message: string) {
         this.snackBar.open(message, 'x', {
-            duration: 3000,
+            duration: undefined,
             panelClass: ["error-custom-style"],
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,

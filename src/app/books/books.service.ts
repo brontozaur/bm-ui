@@ -4,12 +4,15 @@ import {UserBook} from "../users/user-book.model";
 import {NotificationService} from "../notification.service";
 import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
+import {DialogSpinnerDialogComponent} from "../spinner/spinner-dialog.component";
+import {MatDialog} from "@angular/material";
 
 export class BooksService {
 
     constructor(private http: HttpClient,
                 private notification: NotificationService,
-                private router: Router) {
+                private router: Router,
+                private matDialog: MatDialog) {
     }
 
     getBook(id: number) {
@@ -17,11 +20,14 @@ export class BooksService {
     }
 
     saveBook(book: Book) {
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
         this.http.post<UserBook>(`${environment.apiUrl}/api/v1/books`, book).subscribe({
             next: data => {
+                dialog.close();
                 this.router.navigate(['books']);
             },
             error: error => {
+                dialog.close();
                 this.notification.showErrorNotification(error);
                 console.error('There was an error!', error);
             }
@@ -35,6 +41,8 @@ export class BooksService {
         formData.append('file', file);
         formData.append('type', isImage);
 
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
+
         this.http.post<any>(`${environment.apiUrl}/api/v1/books/upload`, formData,
             {responseType: 'text' as 'json'}).subscribe({
             next: data => {
@@ -43,8 +51,10 @@ export class BooksService {
                 } else {
                     book.epub = data;
                 }
+                dialog.close();
             },
             error: error => {
+                dialog.close();
                 this.notification.showErrorNotification(error);
                 console.error('There was an error!', error);
             }
@@ -52,14 +62,18 @@ export class BooksService {
     }
 
     deleteBook(id: number, callbackFcn: () => void) {
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
+
         return this.http.delete(`${environment.apiUrl}/api/v1/books/` + id)
             .subscribe({
                 next: data => {
+                    dialog.close();
                     callbackFcn();
                     this.notification.showOKNotification("Deleted successfully!");
                     console.log('Delete successful');
                 },
                 error: error => {
+                    dialog.close();
                     this.notification.showErrorNotification(error);
                     console.error('There was an error!', error);
                 }
@@ -78,14 +92,18 @@ export class BooksService {
             formData.append("metadatas[]", value[1]);
         });
 
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
+
         this.http.post<any>(`${environment.apiUrl}/api/v1/books/upload-books`, formData)
             .subscribe({
                 next: data => {
+                    dialog.close();
                     this.notification.showOKNotification("Books uploaded!");
                     console.log("Uploaded books");
                     this.router.navigate(['books']);
                 },
                 error: error => {
+                    dialog.close();
                     this.notification.showErrorNotification(error);
                     console.error('There was an error!', error);
                 }
@@ -98,12 +116,16 @@ export class BooksService {
             var book = booksList[index]._row.data;
             books.push(book);
         }
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
+
         this.http.post<any>(`${environment.apiUrl}/api/v1/books/encrypt`, books).subscribe({
             next: data => {
+                dialog.close();
                 table.setData();
                 this.notification.showOKNotification("Books encrypted!");
             },
             error: error => {
+                dialog.close();
                 this.notification.showErrorNotification(error);
                 console.error('There was an error!', error);
             }
@@ -111,8 +133,11 @@ export class BooksService {
     }
 
     downloadEncryptedBook(bookRow) {
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
+
         this.http.get(`${environment.apiUrl}/api/v1/books/download/` + bookRow.id, {responseType: 'arraybuffer'}
         ).subscribe(response => {
+            dialog.close();
             var downloadLink = document.createElement("a");
             var blob = new Blob([response], {type: 'application/epub'});
             var url = URL.createObjectURL(blob);
@@ -126,8 +151,11 @@ export class BooksService {
     }
 
     downloadBook(bookRow) {
+        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
+
         this.http.get(`${environment.apiUrl}/api/v1/books/download-original/` + bookRow.id, {responseType: 'arraybuffer'}
         ).subscribe(response => {
+            dialog.close();
             var downloadLink = document.createElement("a");
             var blob = new Blob([response], {type: 'application/epub'});
             var url = URL.createObjectURL(blob);
