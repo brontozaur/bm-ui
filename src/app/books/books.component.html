@@ -3,14 +3,14 @@
 <form class="form-horizontal">
     <div class="form-group">
         <div class="col-sm-3 margin10Top">
-            <label for="search">Search</label>
+            <label for="search">Search term</label>
             <input type="text" class="form-control" id="search" [(ngModel)]="searchTerm"
                    [ngModelOptions]="{standalone: true}"
                    placeholder="by title or ISBN">
         </div>
         <div class="col-sm-1 margin10Top">
             <label>Filter</label>
-            <div>
+            <div style="white-space: nowrap;">
                 <input type="checkbox" id="onluNotEncrypted" name="onluNotEncrypted" [(ngModel)]="onluNotEncrypted">
                 <label style="margin-left: 5px;" for="onluNotEncrypted">not encrypted</label>
             </div>
