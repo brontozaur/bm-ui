@@ -22,6 +22,8 @@ export class BooksComponent implements OnInit {
     private books: Book[] = [];
     private table;
     public searchTerm: string = "";
+    public bookSorter: string = "TITLE";
+    public onluNotEncrypted: boolean = false;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -29,8 +31,7 @@ export class BooksComponent implements OnInit {
                 private booksServer: BooksService,
                 private notification: NotificationService,
                 private authenticationService: AuthenticationService,
-                private dialog: MatDialog
-    ) {
+                private dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -52,7 +53,7 @@ export class BooksComponent implements OnInit {
 
         this.table = new Tabulator('#books-table', {
             data: this.books,
-            height: 'calc(100vh - 250px)',
+            height: 'calc(100vh - 285px)',
             layout: 'fitColumns',
             addRowPos: 'top',
             ajaxFiltering: true,
@@ -71,6 +72,8 @@ export class BooksComponent implements OnInit {
             ajaxURL: `${environment.apiUrl}/api/v1/books/filter`,
             ajaxURLGenerator: (url, config, params) => {
                 params.searchTerm = this.searchTerm;
+                params.sorter = this.bookSorter;
+                params.onluNotEncrypted = this.onluNotEncrypted;
                 if (this.authenticationService.currentUserValue) {
                     config.headers = {
                         'Authorization': `Bearer ${this.authenticationService.currentUserValue.accessToken}`
@@ -87,9 +90,6 @@ export class BooksComponent implements OnInit {
                 this.notification.showErrorNotification(xhr)
             },
             paginationSize: 20,
-            initialSort: [
-                {column: 'id', dir: 'desc'},
-            ],
             columns: [
                 {
                     formatter: "rowSelection",
@@ -128,6 +128,7 @@ export class BooksComponent implements OnInit {
                     }
                 },
                 {title: 'ISBN', field: 'isbn'},
+                {title: 'Publisher', field: 'publisher'},
                 {
                     title: 'Status',
                     field: 'status',

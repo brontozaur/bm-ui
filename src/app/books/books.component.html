@@ -2,21 +2,38 @@
 <br>
 <form class="form-horizontal">
     <div class="form-group">
-        <div class="col-sm-1">
-            <label for="search" class="control-label">Search</label>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3 margin10Top">
+            <label for="search">Search</label>
             <input type="text" class="form-control" id="search" [(ngModel)]="searchTerm"
                    [ngModelOptions]="{standalone: true}"
                    placeholder="by title or ISBN">
         </div>
-        <div class="col-xs-1">
-            <button class="btn btn-primary" (click)="onSearch()">
+        <div class="col-sm-1 margin10Top">
+            <label>Filter</label>
+            <div>
+                <input type="checkbox" id="onluNotEncrypted" name="onluNotEncrypted" [(ngModel)]="onluNotEncrypted">
+                <label style="margin-left: 5px;" for="onluNotEncrypted">not encrypted</label>
+            </div>
+        </div>
+        <div class="col-sm-1 margin10Top">
+            <label>Sort</label>
+            <select name="sorter" class="form-control" [(ngModel)]="bookSorter">
+                <option value="TITLE">Titlu</option>
+                <option value="STATUS">Status</option>
+                <option value="PUBLISHER">Editura</option>
+                <option value="CREATED_AT">Creat la</option>
+                <option value="UPDATED_AT">Actualizat la</option>
+            </select>
+        </div>
+        <div class="col-xs-1 margin10Top">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary form-control" (click)="onSearch()">
                 <i class="fas fa-search"></i>
                 Search
             </button>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 margin10Top">
+            <label>&nbsp;</label>
             <div class="pull-right">
                 <button class="btn btn-success margin10Right" (click)="onNewBook()">
                     <i class="fas fa-plus"></i> New Book
