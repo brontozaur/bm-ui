@@ -22,7 +22,7 @@ export class BooksComponent implements OnInit {
     private books: Book[] = [];
     private table;
     public searchTerm: string = "";
-    public bookSorter: string = "TITLE";
+    public bookSorter: string = "CREATED_AT";
     public onluNotEncrypted: boolean = false;
 
     constructor(private router: Router,
