@@ -15,10 +15,7 @@ export class DistributorsService {
     }
 
     getDistributor(id: number) {
-        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
-        return this.http.get<Distributor>(`${environment.apiUrl}/api/v1/distributors/` + id).subscribe(() => {
-            dialog.close();
-        });
+       return this.http.get<Distributor>(`${environment.apiUrl}/api/v1/distributors/` + id);
     }
 
     saveDistributor(distributor: Distributor) {
@@ -53,10 +50,7 @@ export class DistributorsService {
     }
 
     getAll() {
-        var dialog = this.matDialog.open(DialogSpinnerDialogComponent, { id: 'DialogSpinnerComponent', disableClose: true });
-        return this.http.get<Distributor>(`${environment.apiUrl}/api/v1/distributors/all`).subscribe(() => {
-            dialog.close();
-        });
+        return this.http.get<Distributor>(`${environment.apiUrl}/api/v1/distributors/all`);
     }
 
     reloadDistributors(table) {
